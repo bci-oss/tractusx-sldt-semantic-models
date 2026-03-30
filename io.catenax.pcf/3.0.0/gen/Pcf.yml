@@ -1,0 +1,606 @@
+---
+openapi: 3.0.3
+info:
+  title: Product (Carbon) Footprint
+  version: v3
+  x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#Pcf"
+servers:
+- url: catenax.io/api/v3
+  variables:
+    api-version:
+      default: v3
+paths:
+  /{tenant-id}/pcf:
+    get:
+      tags:
+      - Pcf
+      operationId: getPcf
+      parameters:
+      - name: tenant-id
+        in: path
+        description: The ID of the tenant owning the requested Twin.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: start
+        in: query
+        description: Starting index which is starting by 0
+        required: false
+        schema:
+          type: number
+      - name: count
+        in: query
+        description: Number of items to return per call.
+        required: false
+        schema:
+          type: number
+      - name: totalItemCount
+        in: query
+        description: Flag that indicates that the total counts should be returned.
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          $ref: "#/components/responses/Pcf"
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: "#/components/schemas/Error"
+    Error:
+      type: object
+      required:
+      - details
+      properties:
+        message:
+          type: string
+          minLength: 1
+        path:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          minLength: 1
+          additionalProperties:
+            type: object
+        code:
+          type: string
+          nullable: true
+    PagingSchema:
+      type: object
+      properties:
+        items:
+          type: array
+          $ref: "#/components/schemas/Pcf"
+        totalItems:
+          type: number
+        totalPages:
+          type: number
+        pageSize:
+          type: number
+        currentPage:
+          type: number
+    IdTrait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#IdTrait"
+      description: Constraint for defining a product footprint identifier as specified
+        by the WBCSD (World Business Council for Sustainable Development) Pathfinder
+        initiative.
+      pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    SpecVersionTrait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#SpecVersionTrait"
+      description: Constraint for defining a version of an artefact (e.g. a specification
+        version) belonging to a product footprint as specified by the WBCSD (World
+        Business Council for Sustainable Development) Pathfinder initiative.
+      pattern: \d+\.\d+\.\d+
+    ProductFootprintVersionCharacteristic:
+      type: number
+      minimum: 1
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#ProductFootprintVersionCharacteristic"
+      description: Characteristic for defining a product footprint version as specified
+        by the WBCSD (World Business Council for Sustainable Development) Pathfinder
+        initiative.
+    Timestamp:
+      type: string
+      pattern: "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\\
+        .[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"
+      x-samm-aspect-model-urn: "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Timestamp"
+      description: Describes a Property which contains the date and time with an optional
+        timezone.
+    NonEmptyString:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#NonEmptyString"
+      description: String that contains at least one character.
+    CompanyIdsCharacteristic:
+      description: Characteristic for defining a list of company ids in context of
+        a product footprint.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#CompanyIdsCharacteristic"
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+    Text:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Text"
+      description: "Describes a Property which contains plain text. This is intended\
+        \ exclusively for human readable strings, not for identifiers, measurement\
+        \ values, etc."
+    ProductIdsCharacteristic:
+      description: Characteristic for defining a lost of product ids in context of
+        a product footprint.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#ProductIdsCharacteristic"
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+    DeclaredUnit:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#DeclaredUnit"
+      description: Unit of analysis of the product with accepted values as specified
+        by the WBCSD (World Business Council for Sustainable Development) Pathfinder
+        initiative.
+      enum:
+      - liter
+      - kilogram
+      - cubic meter
+      - kilowatt hour
+      - megajoule
+      - ton kilometer
+      - square meter
+    StrictlyPositiveDecimal:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#StrictlyPositiveDecimal"
+      description: "A positive, non-zero decimal."
+    EmissionsTrait:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#EmissionsTrait"
+      description: 'Only positive emission values (>0) are valid '
+      minimum: 0.0
+      exclusiveMinimum: false
+    BiogenicEmissionEntity:
+      description: Entity for biogenic emissions of a PCF (Product Carbon Footprint)
+        as specified by the WBCSD (World Business Council for Sustainable Development)
+        Pathfinder initiative.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#BiogenicEmissionEntity"
+      type: object
+      properties:
+        landUseEmissions:
+          description: Land use emissions (e.g. cultural practice).
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#landUseEmissions"
+          $ref: "#/components/schemas/EmissionsTrait"
+        otherEmissions:
+          description: Other emissions (e.g. biogenic waste treatment).
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#otherEmissions"
+          $ref: "#/components/schemas/EmissionsTrait"
+        landUseChangeEmissions:
+          description: "Land use change emissions. As specified by WBCSD (World Business\
+            \ Council for Sustainable Development) this value must include direct\
+            \ land use change (dLUC) where available, otherwise statistical land use\
+            \ change (sLUC) can be used. If available, including indirect land use\
+            \ change (iLUC) to remain optional. "
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#landUseChangeEmissions"
+          $ref: "#/components/schemas/EmissionsTrait"
+    BiogenicEmissionCharacteristic:
+      description: Characteristic for defining the biogenic emissions of a PCF (Product
+        Carbon Footprint) as specified by the WBCSD (World Business Council for Sustainable
+        Development) Pathfinder initiative.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#BiogenicEmissionCharacteristic"
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/BiogenicEmissionEntity"
+    PrimaryDataShareTrait:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#PrimaryDataShareTrait"
+      description: Constraint for a primary data share of a product footprint which
+        limit values between 0.0 and 100.0 as specified by the WBCSD (World Business
+        Council for Sustainable Development) Pathfinder initiative.
+      maximum: 100.0
+      exclusiveMaximum: false
+      minimum: 0.0
+      exclusiveMinimum: false
+    EmissionFactorSourcesEntity:
+      description: Entity for defining a list of emission factor databases for a product
+        footprint incl. their names and versions as specified by the WBCSD (World
+        Business Council for Sustainable Development) Pathfinder initiative.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#EmissionFactorSourcesEntity"
+      type: object
+      properties:
+        name:
+          description: Secondary data sources used (mandatory if applicable) and information
+            on which life cycle stages the sources were used for.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#name"
+          $ref: "#/components/schemas/NonEmptyString"
+        version:
+          description: Secondary data sources version (mandatory  if applicable).
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#version"
+          $ref: "#/components/schemas/NonEmptyString"
+      required:
+      - name
+      - version
+    EmissionFactorSourcesCharacteristic:
+      description: Characteristic for defining a list of emission factor databases
+        for a product footprint as specified by the WBCSD (World Business Council
+        for Sustainable Development) Pathfinder initiative.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#EmissionFactorSourcesCharacteristic"
+      type: array
+      items:
+        $ref: "#/components/schemas/EmissionFactorSourcesEntity"
+      uniqueItems: true
+    GeographyCountrySubdivisionTrait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#GeographyCountrySubdivisionTrait"
+      description: Constraint for defining a geography country subdivision in compliance
+        to ISO 3166-2 as specified by the WBCSD (World Business Council for Sustainable
+        Development) Pathfinder initiative.
+      pattern: "([A-Z]{2}-[A-Z0-9]{1,3}|)"
+    GeographyCountryTrait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#GeographyCountryTrait"
+      description: Constraint for defining a geography country conform to ISO 3166CC
+        as specified by the WBCSD (World Business Council for Sustainable Development)
+        Pathfinder initiative.
+      pattern: "([A-Z]{2})"
+    GeographyRegionOrSubregionCharacteristic:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#GeographyRegionOrSubregionCharacteristic"
+      description: Characteristic for defining a list of valid regions as specified
+        by the WBCSD (World Business Council for Sustainable Development) Pathfinder
+        initiative.
+      enum:
+      - Africa
+      - Americas
+      - Asia
+      - Europe
+      - Oceania
+      - Australia and New Zealand
+      - Central Asia
+      - Eastern Asia
+      - Eastern Europe
+      - Latin America and the Caribbean
+      - Melanesia
+      - Micronesia
+      - Northern Africa
+      - Northern America
+      - Northern Europe
+      - Polynesia
+      - South-eastern Asia
+      - Southern Asia
+      - Southern Europe
+      - Sub-Saharan Africa
+      - Western Asia
+      - Western Europe
+    CrossSectoralStandardsUsedEnumerationCharacteristic:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#CrossSectoralStandardsUsedEnumerationCharacteristic"
+      description: Characteristic for defining the enumeration of valid accounting
+        standards used for product carbon footprint calculation as specified by the
+        WBCSD (World Business Council for Sustainable Development) Pathfinder initiative.
+      enum:
+      - GHG Protocol Product standard
+      - ISO Standard 14067
+      - ISO Standard 14044
+    CrossSectoralStandardEntity:
+      description: Entity for defining an accounting standard used for product carbon
+        footprint calculation as specified by the WBCSD (World Business Council for
+        Sustainable Development) Pathfinder initiative.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#CrossSectoralStandardEntity"
+      type: object
+      properties:
+        crossSectoralStandard:
+          description: Discloses a cross-sectoral standard applied for calculating
+            or allocating GHG (Greenhouse Gas) emissions as specified by the WBCSD
+            (World Business Council for Sustainable Development) Pathfinder initiative.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#crossSectoralStandard"
+          $ref: "#/components/schemas/CrossSectoralStandardsUsedEnumerationCharacteristic"
+      required:
+      - crossSectoralStandard
+    CrossSectoralStandardsUsedListCharacteristic:
+      description: Characteristic for defining the list of valid accounting standards
+        used for product carbon footprint calculation as specified by the WBCSD (World
+        Business Council for Sustainable Development) Pathfinder initiative.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#CrossSectoralStandardsUsedListCharacteristic"
+      type: array
+      items:
+        $ref: "#/components/schemas/CrossSectoralStandardEntity"
+    ProductOrSectorSpecificRuleOperator:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#ProductOrSectorSpecificRuleOperator"
+      description: Enumeration of PCR (Product Category Rule) operators as specified
+        by the WBCSD (World Business Council for Sustainable Development) Pathfinder
+        initiative.
+      enum:
+      - PEF
+      - EPD International
+      - Other
+    RuleNamesTrait:
+      description: Constraint for defining a non-empty set of non-empty rule names
+        as specified by the WBCSD (World Business Council for Sustainable Development)
+        Pathfinder initiative.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#RuleNamesTrait"
+      type: array
+      items:
+        type: string
+        x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#NonEmptyString"
+        description: String that contains at least one character.
+      uniqueItems: true
+      minItems: 1
+    ProductOrSectorSpecificRulesEntity:
+      description: Entity for defining the set of values for the product or sector
+        specific rules of a product carbon footprint as specified by the WBCSD (World
+        Business Council for Sustainable Development) Pathfinder initiative.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#ProductOrSectorSpecificRulesEntity"
+      type: object
+      properties:
+        operator:
+          description: Operator of PCR (Product Category Rule)/ PSR (Product Specific
+            Rule) as specified by the WBCSD (World Business Council for Sustainable
+            Development) Pathfinder initiative.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#operator"
+          $ref: "#/components/schemas/ProductOrSectorSpecificRuleOperator"
+        ruleNames:
+          description: Product-specific or sector-specific set of rules used for calculating
+            or allocating GHG (Greenhouse Gas) emissions applied from the specified
+            operator. Property defined by the WBCSD (World Business Council for Sustainable
+            Development) Pathfinder initiative.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#ruleNames"
+          $ref: "#/components/schemas/RuleNamesTrait"
+        otherOperatorName:
+          description: Other operator of PCR (Product Category Rule)/ PSR (Product
+            Specific Rule) as specified by the WBCSD (World Business Council for Sustainable
+            Development) Pathfinder initiative.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#otherOperatorName"
+          $ref: "#/components/schemas/Text"
+      required:
+      - operator
+      - ruleNames
+    ProductOrSectorSpecificRuleSet:
+      description: Characteristic for defining the set of product or sector specific
+        rules of a product carbon footprint as specified by the WBCSD (World Business
+        Council for Sustainable Development) Pathfinder initiative.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#ProductOrSectorSpecificRuleSet"
+      type: array
+      items:
+        $ref: "#/components/schemas/ProductOrSectorSpecificRulesEntity"
+      uniqueItems: true
+    PcfEntity:
+      description: Entity for defining a PCF (Product Carbon Footprint) as specified
+        by the WBCSD (World Business Council for Sustainable Development) Pathfinder
+        initiative.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#PcfEntity"
+      type: object
+      properties:
+        declaredUnit:
+          description: unit of analysis of the product.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#declaredUnit"
+          $ref: "#/components/schemas/DeclaredUnit"
+        unitaryProductAmount:
+          description: Amount of units contained within the product the PCF (Product
+            Carbon Footprint) is referring to.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#unitaryProductAmount"
+          $ref: "#/components/schemas/StrictlyPositiveDecimal"
+        fossilGhgEmissions:
+          description: 'Emissions from the combustion of fossil sources. '
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#fossilGhgEmissions"
+          $ref: "#/components/schemas/EmissionsTrait"
+        biogenicEmissions:
+          description: Biogenic emission factors.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#biogenicEmissions"
+          $ref: "#/components/schemas/BiogenicEmissionCharacteristic"
+        biogenicCarbonContent:
+          description: Mass of biogenic carbon per given unit of exchange.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#biogenicCarbonContent"
+          $ref: "#/components/schemas/EmissionsTrait"
+        reportingPeriodStart:
+          description: Starting timestamp for the time scope of a PCF (Product Carbon
+            Footprint).
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#reportingPeriodStart"
+          $ref: "#/components/schemas/Timestamp"
+        reportingPeriodEnd:
+          description: Ending timestamp for the time scope of a product footprint
+            as specified by the WBCSD (World Business Council for Sustainable Development)
+            Pathfinder initiative.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#reportingPeriodEnd"
+          $ref: "#/components/schemas/Timestamp"
+        primaryDataShare:
+          description: Share of primary data.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#primaryDataShare"
+          $ref: "#/components/schemas/PrimaryDataShareTrait"
+        emissionFactorSources:
+          description: Emission factor databases accepted under Version 1 of the Pathfinder
+            Framework (see the Pathfinder Framework Section 6.2).
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#emissionFactorSources"
+          $ref: "#/components/schemas/EmissionFactorSourcesCharacteristic"
+        geographyCountrySubdivision:
+          description: Subdivision of a country. Value must be an ISO 3166-2 subdivision
+            code as specified by the WBCSD (World Business Council for Sustainable
+            Development) Pathfinder initiative.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#geographyCountrySubdivision"
+          $ref: "#/components/schemas/GeographyCountrySubdivisionTrait"
+        geographyCountry:
+          description: Two letter country code. Value must conform to data type ISO
+            3166CC as specified by the WBCSD (World Business Council for Sustainable
+            Development) Pathfinder initiative.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#geographyCountry"
+          $ref: "#/components/schemas/GeographyCountryTrait"
+        geographyRegionOrSubregion:
+          description: Region according to list as specified by the WBCSD (World Business
+            Council for Sustainable Development) Pathfinder initiative.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#geographyRegionOrSubregion"
+          $ref: "#/components/schemas/GeographyRegionOrSubregionCharacteristic"
+        boundaryProcessesDescription:
+          description: Processes attributable to each lifecycle stage as specified
+            by the WBCSD (World Business Council for Sustainable Development) Pathfinder
+            initiative.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#boundaryProcessesDescription"
+          $ref: "#/components/schemas/Text"
+        crossSectoralStandardsUsed:
+          description: Discloses the cross-sectoral standards applied for calculating
+            or allocating GHG (Greenhouse Gas) emissions as specified by the WBCSD
+            (World Business Council for Sustainable Development) Pathfinder initiative.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#crossSectoralStandardsUsed"
+          $ref: "#/components/schemas/CrossSectoralStandardsUsedListCharacteristic"
+        productOrSectorSpecificRules:
+          description: "Product or sector specific rules applied for calculating or\
+            \ allocating GHG (Greenhouse Gas) emissions, e.g. PCRs (Product Category\
+            \ Rules), including operators or pubishers and according rule names. Specified\
+            \ by the WBCSD (World Business Council for Sustainable Development) Pathfinder\
+            \ initiative."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#productOrSectorSpecificRules"
+          $ref: "#/components/schemas/ProductOrSectorSpecificRuleSet"
+        allocationRulesDescription:
+          description: Allocation rules used and underlying reasoning as specified
+            by the WBCSD (World Business Council for Sustainable Development) Pathfinder
+            initiative.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#allocationRulesDescription"
+          $ref: "#/components/schemas/Text"
+      required:
+      - declaredUnit
+      - unitaryProductAmount
+      - fossilGhgEmissions
+      - biogenicCarbonContent
+      - reportingPeriodStart
+      - reportingPeriodEnd
+      - primaryDataShare
+      - crossSectoralStandardsUsed
+      - productOrSectorSpecificRules
+    PcfCharacteristic:
+      description: Characteristic for defining a PCF (Product Carbon Footprint) as
+        specified by the WBCSD (World Business Council for Sustainable Development)
+        Pathfinder initiative.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#PcfCharacteristic"
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/PcfEntity"
+    Pcf:
+      description: "Normative: Each Product (Carbon) Footprint represents the carbon\
+        \ footprint of a product with values in accordance with the WBCSD (World Business\
+        \ Council for Sustainable Development)/ Pathfinder framework. Non-normative:\
+        \ Each Product Footprint relates to a specific product, identified by one\
+        \ or more product identifiers. The Product Footprint is modeled as a multi\
+        \ purpose container for product-specific factors."
+      type: object
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#Pcf"
+      properties:
+        id:
+          description: The product footprint identifier as specified by the WBCSD
+            (World Business Council for Sustainable Development) Pathfinder initiative.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#id"
+          $ref: "#/components/schemas/IdTrait"
+        specVersion:
+          description: "Version of the product footprint data specification. The value\
+            \ MUST be \"1.0.0\". Note: subsequent revisions of the product footprint\
+            \ data specification will update this value according to the rules of\
+            \ Semantic Versioning 2.0.0."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#specVersion"
+          $ref: "#/components/schemas/SpecVersionTrait"
+        version:
+          description: Whenever a data owner or a host system updates a product footprint
+            it must set the version to be by strictly greater than the value of all
+            preceding footprints.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#productFootprintVersion"
+          $ref: "#/components/schemas/ProductFootprintVersionCharacteristic"
+        updated:
+          description: Timestamp of the product footprint update. A product footprint
+            must not include this property if an update has never been performed.
+            The timestamp must be in UTC (Universal Time Code).
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#updated"
+          $ref: "#/components/schemas/Timestamp"
+        companyName:
+          description: Name of the company that is the ProductFootprint Data Owner.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#companyName"
+          $ref: "#/components/schemas/NonEmptyString"
+        companyIds:
+          description: CompanyIds with value the non-empty set of Uniform Resource
+            Names (URN)2. Each value of this set is supposed to uniquely identify
+            the ProductFootprint Data Owner.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#companyIds"
+          $ref: "#/components/schemas/CompanyIdsCharacteristic"
+        productDescription:
+          description: Free-form description of the product plus other information
+            related to it such as production technology or packaging.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#productDescription"
+          $ref: "#/components/schemas/Text"
+        productIds:
+          description: 'Each of the values in the set is supposed to uniquely identify
+            the product. '
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#productIds"
+          $ref: "#/components/schemas/ProductIdsCharacteristic"
+        productCategoryCpc:
+          description: UN (United Nations) Product Classification Code (CPC - Central
+            Classification Code) 3 that the given product belongs to.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#productCategoryCpc"
+          $ref: "#/components/schemas/Text"
+        productNameCompany:
+          description: Trade name of the product.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#productNameCompany"
+          $ref: "#/components/schemas/NonEmptyString"
+        comment:
+          description: "Additional information and instructions related to the calculation\
+            \ of the footprint, or other information which informs the ability to\
+            \ interpret, to audit or to verify the Product Footprint."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#comment"
+          $ref: "#/components/schemas/Text"
+        pcf:
+          description: A PCF (Product Carbon Footprint) represents the carbon footprint
+            of a product and related data in accordance with the Pathfinder Framework.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#pcf"
+          $ref: "#/components/schemas/PcfCharacteristic"
+        created:
+          description: Timestamp of the creation of the Product Footprint.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.pcf:3.0.0#created"
+          $ref: "#/components/schemas/Timestamp"
+      required:
+      - id
+      - specVersion
+      - version
+      - companyName
+      - companyIds
+      - productDescription
+      - productIds
+      - productCategoryCpc
+      - productNameCompany
+      - comment
+      - pcf
+      - created
+  responses:
+    Unauthorized:
+      description: The requesting user or client is not authenticated.
+    Forbidden:
+      description: The requesting user or client is not authorized to access resources.
+    NotFoundError:
+      description: The requested resource has not been found.
+    ClientError:
+      description: Payload or user input is invalid. See error details in the payload
+        for more information.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Pcf:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PagingSchema"
+      description: The request was successful.
+  requestBodies:
+    Pcf:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Pcf"
+      required: true

@@ -1,0 +1,102 @@
+{
+  "dismantlerProperties" : {
+    "expiryDate" : "2025-10-31",
+    "governmentAddress" : {
+      "houseNumber" : "45",
+      "zip" : "68161/12",
+      "name" : "VLhpfQGTMDYpsBZxvfBoeygjb",
+      "country" : "ML",
+      "location" : "Mannheim",
+      "street" : "Bernstraße"
+    },
+    "dismantlerAuditorContact" : {
+      "fax" : "0590792712074 21963651380433 058946 073825 205 377591951",
+      "phone" : "+90392 95881785 08  7361"
+    },
+    "receiverAuditorAddress" : {
+      "houseNumber" : "45",
+      "zip" : "68161/12",
+      "name" : "UMaAIKKIkknjWEXJUfPxxQHeWKEJ",
+      "country" : "ZJ",
+      "location" : "Mannheim",
+      "street" : "Bernstraße"
+    },
+    "dismantlerContact" : {
+      "fax" : "34438 501 07885319 6 5106469552505 949000 2147 9828631",
+      "phone" : "40 62294917 8332 304"
+    },
+    "dismantlerAuditorAddress" : {
+      "houseNumber" : "45",
+      "zip" : "68161/12",
+      "name" : "dpHYZGhtgdntugzvvKAXLhM",
+      "country" : "BC",
+      "location" : "Mannheim",
+      "street" : "Bernstraße"
+    },
+    "dismantlerAddress" : {
+      "houseNumber" : "45",
+      "zip" : "68161/12",
+      "name" : "RYtGKbgicZaHCBRQDSx",
+      "country" : "WG",
+      "location" : "Mannheim",
+      "street" : "Bernstraße"
+    },
+    "issueDate" : "2025-10-31",
+    "isVehicleWithdrawnFromService" : false
+  },
+  "serialNumber" : "LRP1087432",
+  "companyNumber" : "S30A00065",
+  "vehicleProperties" : {
+    "licenseAbbreviation" : "HAL",
+    "isVehicleInformationComplete" : false,
+    "licensePlate" : "HAL-UI123",
+    "identification" : "WBAAY711X0KC28153",
+    "emptyWeight" : -179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+    "model" : "318 I",
+    "brand" : "BMW",
+    "class" : "01",
+    "firstRegistration" : "19.12.2014"
+  },
+  "returnPointProperties" : {
+    "expiryDate" : "2025-10-31",
+    "receiverAddress" : {
+      "houseNumber" : "45",
+      "zip" : "68161/12",
+      "name" : "JxkyvRnL",
+      "country" : "ET",
+      "location" : "Mannheim",
+      "street" : "Bernstraße"
+    },
+    "receiverAuditorAddress" : {
+      "houseNumber" : "45",
+      "zip" : "68161/12",
+      "name" : "yedUsFwdkelQbxeTeQOvaScfqIOOmaa",
+      "country" : "QX",
+      "location" : "Mannheim",
+      "street" : "Bernstraße"
+    },
+    "receiverAuditorContact" : {
+      "fax" : "+07443573700956085 050940 811441758380",
+      "phone" : " 553992307591646541795 18257351245311372728850 1"
+    },
+    "receiverContact" : {
+      "fax" : "+6 98890465542640",
+      "phone" : "+499970 96384512032 00814242260565788966699490348934555163096547 278436098 9309 75 05209 57822"
+    },
+    "issueDate" : "2025-10-31",
+    "isVehicleWithdrawnFromService" : true
+  },
+  "vehicleOwnerProperties" : {
+    "isVehicleOwnerInformationComplete" : true,
+    "vehicleOwnerAddress" : {
+      "houseNumber" : "45",
+      "zip" : "68161/12",
+      "name" : "eOMtThyhVNLWUZNRcBaQKxI",
+      "country" : "ZU",
+      "location" : "Mannheim",
+      "street" : "Bernstraße"
+    },
+    "citizenship" : "DE"
+  },
+  "dismantlingDate" : "2025-10-31"
+}

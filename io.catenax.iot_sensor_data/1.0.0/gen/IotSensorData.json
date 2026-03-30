@@ -1,0 +1,26 @@
+{
+  "catenaXId" : "urn:uuid:ed85f17e-29dd-473c-9cb8-d7ad1dc44d2f",
+  "weight" : 15.5,
+  "errorCode" : 105,
+  "pressure" : 2.6,
+  "geoData" : {
+    "altitude" : 280.2,
+    "geoDataTimestamp" : "2023-02-04T14:48:54",
+    "latitude" : 4807.03,
+    "longitude" : 1131.02
+  },
+  "timestampSensoric" : "2023-02-05T15:48:54",
+  "acceleration" : 33.528,
+  "binarySensor" : 0,
+  "light" : 4.5E+2,
+  "temperature" : 25,
+  "humidity" : 74,
+  "soundSensor" : 48,
+  "analogSensor" : [ {
+    "analogSensorNumber" : 1,
+    "analogSensorValue" : 2.55
+  } ],
+  "batteryLevel" : 5E+1,
+  "fillingLevel" : 45,
+  "transmissionMethod" : "LoRaWAN"
+}

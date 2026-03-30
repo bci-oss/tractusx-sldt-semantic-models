@@ -1,0 +1,158 @@
+---
+openapi: 3.0.3
+info:
+  title: Shopfloor Information Types
+  version: v1
+  x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.shopfloor_information_types:1.0.0#ShopfloorInformationTypes"
+servers:
+- url: catenax.io/api/v1
+  variables:
+    api-version:
+      default: v1
+paths:
+  /{tenant-id}/shopfloor-information-types:
+    get:
+      tags:
+      - ShopfloorInformationTypes
+      operationId: getShopfloorInformationTypes
+      parameters:
+      - name: tenant-id
+        in: path
+        description: The ID of the tenant owning the requested Twin.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          $ref: "#/components/responses/ShopfloorInformationTypes"
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: "#/components/schemas/Error"
+    Error:
+      type: object
+      required:
+      - details
+      properties:
+        message:
+          type: string
+          minLength: 1
+        path:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          minLength: 1
+          additionalProperties:
+            type: object
+        code:
+          type: string
+          nullable: true
+    CommunicationModeEnum:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.shopfloor_information_types:1.0.0#CommunicationModeEnum"
+      description: Enumerates all possible communication modes
+      enum:
+      - synchronous
+      - cyclic
+      - notification
+    BpnCharacteristic:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.message_header:1.0.0#BpnCharacteristic"
+      description: Characteristic for defining BPN values
+    TimeUnitEnum:
+      type: string
+      pattern: "[a-zA-Z]*:[a-zA-Z]+"
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.shopfloor_information_types:1.0.0#TimeUnitEnum"
+      description: Enumerates all time units
+      enum:
+      - unit:secondUnitOfTime
+      - unit:minuteUnitOfTime
+      - unit:hour
+      - unit:day
+      - unit:week
+      - unit:month
+      - unit:year
+    IntegerValueCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.shopfloor_information_types:1.0.0#IntegerValueCharacteristic"
+      description: The value of the specified timeUnit as an integer value
+    TimeValueCharacteristic:
+      description: Link to the  TimeUnit Data Type
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.shopfloor_information_types:1.0.0#TimeValueCharacteristic"
+      type: object
+      properties:
+        timeUnit:
+          description: Specifies the unit in which the time is represented
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.shopfloor_information_types:1.0.0#timeUnit"
+          $ref: "#/components/schemas/TimeUnitEnum"
+        value:
+          description: The amount of timeUnits considered
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.shopfloor_information_types:1.0.0#value"
+          $ref: "#/components/schemas/IntegerValueCharacteristic"
+      required:
+      - timeUnit
+      - value
+    ShopfloorInformationTypes:
+      description: Collection of types used in multiple data models of the Shopfloor
+        Information Service
+      type: object
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.shopfloor_information_types:1.0.0#ShopfloorInformationTypes"
+      properties:
+        communicationMode:
+          description: Specification of the communication mode
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.shopfloor_information_types:1.0.0#communicationMode"
+          $ref: "#/components/schemas/CommunicationModeEnum"
+        versionDataModel:
+          description: Specifies the used version of the data model
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.shopfloor_information_types:1.0.0#versionDataModel"
+          $ref: "#/components/schemas/BpnCharacteristic"
+        timeValue:
+          description: A time Value property
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.shopfloor_information_types:1.0.0#timeValue"
+          $ref: "#/components/schemas/TimeValueCharacteristic"
+      required:
+      - communicationMode
+      - versionDataModel
+      - timeValue
+  responses:
+    Unauthorized:
+      description: The requesting user or client is not authenticated.
+    Forbidden:
+      description: The requesting user or client is not authorized to access resources.
+    NotFoundError:
+      description: The requested resource has not been found.
+    ClientError:
+      description: Payload or user input is invalid. See error details in the payload
+        for more information.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ShopfloorInformationTypes:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ShopfloorInformationTypes"
+      description: The request was successful.
+  requestBodies:
+    ShopfloorInformationTypes:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ShopfloorInformationTypes"
+      required: true

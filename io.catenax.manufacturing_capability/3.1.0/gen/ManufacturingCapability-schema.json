@@ -1,0 +1,419 @@
+{
+  "$schema" : "http://json-schema.org/draft-04/schema",
+  "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#ManufacturingCapability",
+  "description" : "An aspect model representing manufacturing capabilities, based on the concepts for products, processes, resources and capabilities, as well as their relations to each other.",
+  "type" : "object",
+  "components" : {
+    "schemas" : {
+      "BillOfProcessIdCharacteristic" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.shared.bill_of_process:1.1.0#BillOfProcessIdCharacteristic",
+        "description" : "Characteristic for Bill of process Identifiers"
+      },
+      "BoPEntity" : {
+        "description" : "Element containing a bill of process identifier.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#BoPEntity",
+        "type" : "object",
+        "properties" : {
+          "billOfProcessIdentification" : {
+            "description" : "Unique identifier for a bill of process that can be used to reference instances of the bill of process",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.shared.bill_of_process:1.1.0#billOfProcessIdentification",
+            "$ref" : "#/components/schemas/BillOfProcessIdCharacteristic"
+          }
+        },
+        "required" : [ "billOfProcessIdentification" ]
+      },
+      "ProcessSetCharacteristic" : {
+        "description" : "Characteristic for a set of bill of processes.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#ProcessSetCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/BoPEntity"
+        },
+        "uniqueItems" : true
+      },
+      "MultiLanguageText" : {
+        "type" : "object",
+        "x-samm-aspect-model-urn" : "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#MultiLanguageText",
+        "description" : "Describes a Property which contains plain text in multiple languages. This is intended exclusively for human readable strings, not for identifiers, measurement values, etc."
+      },
+      "IdCharacteristic" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#IdCharacteristic",
+        "description" : "Characteristic for identifiers."
+      },
+      "SemanticReferenceEntity" : {
+        "description" : "Element containing the SAMM properties of a semantic reference.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#SemanticReferenceEntity",
+        "type" : "object",
+        "properties" : {
+          "semanticReferenceId" : {
+            "description" : "Globally unique identifier for the semantic.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#semanticReferenceId",
+            "$ref" : "#/components/schemas/IdCharacteristic"
+          }
+        },
+        "required" : [ "semanticReferenceId" ]
+      },
+      "SemanticReferenceSetCharacteristic" : {
+        "description" : "Characteristic for a set of semantic references",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#SemanticReferenceSetCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/SemanticReferenceEntity"
+        },
+        "uniqueItems" : true
+      },
+      "PropertyValueCharacteristic" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#PropertyValueCharacteristic",
+        "description" : "Characteristic for a property value."
+      },
+      "PropertyEntity" : {
+        "description" : "Element containing the SAMM properties of a property.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#PropertyEntity",
+        "type" : "object",
+        "properties" : {
+          "propertyLabel" : {
+            "description" : "Human readable label of a property.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#propertyLabel",
+            "$ref" : "#/components/schemas/MultiLanguageText"
+          },
+          "semanticReferences" : {
+            "description" : "A set of semantic references.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#semanticReferences",
+            "$ref" : "#/components/schemas/SemanticReferenceSetCharacteristic"
+          },
+          "propertyValue" : {
+            "description" : "The value of a property. Note that this SAMM property does have a variable type and is therefore defined as string.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#propertyValue",
+            "$ref" : "#/components/schemas/PropertyValueCharacteristic"
+          }
+        },
+        "required" : [ "propertyLabel" ]
+      },
+      "PropertySetCharacteristic" : {
+        "description" : "Characteristic for a set of property representations.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#PropertySetCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/PropertyEntity"
+        },
+        "uniqueItems" : true
+      },
+      "HierarchyElementIdCharacteristic" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#HierarchyElementIdCharacteristic",
+        "description" : "Characteristic for an identifier of a hierarcy element."
+      },
+      "HierarchyElementIdEntity" : {
+        "description" : "Element containing the SAMM properties of a hierarchy element.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#HierarchyElementIdEntity",
+        "type" : "object",
+        "properties" : {
+          "hierarchyElementId" : {
+            "description" : "An identifier of a hierarchy element.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#hierarchyElementId",
+            "$ref" : "#/components/schemas/HierarchyElementIdCharacteristic"
+          }
+        },
+        "required" : [ "hierarchyElementId" ]
+      },
+      "HierarchyElementSetCharacteristic" : {
+        "description" : "Characteristic for a set of hierarchy elements.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#HierarchyElementSetCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/HierarchyElementIdEntity"
+        },
+        "uniqueItems" : true
+      },
+      "MachineEntity" : {
+        "description" : "Element containing the SAMM properties of a machine.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#MachineEntity",
+        "type" : "object",
+        "properties" : {
+          "provides" : {
+            "description" : "Set of capabilities the machine can provide.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#provides",
+            "$ref" : "#/components/schemas/CapabilitySetCharacteristic"
+          },
+          "containsTools" : {
+            "description" : "Set of machine tools the machine can be equipped with.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#containsTools",
+            "$ref" : "#/components/schemas/MachineToolSetCharacteristic"
+          }
+        },
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ElementAbstractEntity"
+        } ]
+      },
+      "ProductEntity" : {
+        "description" : "Element containing the SAMM properties of a product.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#ProductEntity",
+        "type" : "object",
+        "properties" : { },
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ElementAbstractEntity"
+        } ]
+      },
+      "MaterialEntity" : {
+        "description" : "Characteristic for a material.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#MaterialCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "belongsToMaterialFamilies" : {
+            "description" : "A material belongs to certain material families.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#belongsToMaterialFamilies",
+            "$ref" : "#/components/schemas/MaterialFamilySetCharacteristic"
+          }
+        },
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ElementAbstractEntity"
+        } ]
+      },
+      "MaterialFamilyEntity" : {
+        "description" : "Element containing the SAMM properties of a material family.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#MaterialFamilyEntity",
+        "type" : "object",
+        "properties" : { },
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/HierarchyElementAbstractEntity"
+        } ]
+      },
+      "CapabilityEntity" : {
+        "description" : "Element containing the SAMM properties of a capability.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#CapabilityEntity",
+        "type" : "object",
+        "properties" : {
+          "capabilityConstraintSet" : {
+            "description" : "Set of conditions imposed on capabilities which further detail their applicability.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#capabilityConstraintSet",
+            "$ref" : "#/components/schemas/CapabilityConstraintSetCharacteristic"
+          },
+          "semanticReferences" : {
+            "description" : "A set of semantic references.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#semanticReferences",
+            "$ref" : "#/components/schemas/SemanticReferenceSetCharacteristic"
+          },
+          "capabilityId" : {
+            "description" : "Locally unique identifier for a capability.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#capabilityId",
+            "$ref" : "#/components/schemas/IdCharacteristic"
+          },
+          "capabilityLabel" : {
+            "description" : "Label of a capability.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#capabilityLabel",
+            "$ref" : "#/components/schemas/MultiLanguageText"
+          }
+        },
+        "required" : [ "capabilityLabel" ],
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/HierarchyElementAbstractEntity"
+        } ]
+      },
+      "HierarchyElementAbstractEntity" : {
+        "description" : "Template for elements containing the SAMM properties needed to build hierarchies.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#HierarchyElementAbstractEntity",
+        "type" : "object",
+        "properties" : {
+          "specializes" : {
+            "description" : "One hierarchy element can specialize others.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#specializes",
+            "$ref" : "#/components/schemas/HierarchyElementSetCharacteristic"
+          },
+          "generalizes" : {
+            "description" : "One hierarchy element can generalize others.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#generalizes",
+            "$ref" : "#/components/schemas/HierarchyElementSetCharacteristic"
+          },
+          "hierarchyElementId" : {
+            "description" : "An identifier of a hierarchy element.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#hierarchyElementId",
+            "$ref" : "#/components/schemas/HierarchyElementIdCharacteristic"
+          }
+        },
+        "required" : [ "hierarchyElementId" ],
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ElementAbstractEntity"
+        } ]
+      },
+      "CertificateEntity" : {
+        "description" : "Element containing the SAMM properties of a certificate.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#CertificateEntity",
+        "type" : "object",
+        "properties" : { },
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ElementAbstractEntity"
+        } ]
+      },
+      "ElementAbstractEntity" : {
+        "description" : "Template for elements needing a label and containing properties.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#ElementAbstractEntity",
+        "type" : "object",
+        "properties" : {
+          "properties" : {
+            "description" : "Set of qualities or characteristics inherent in or ascribed to process, resource, product or capability entities.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#properties",
+            "$ref" : "#/components/schemas/PropertySetCharacteristic"
+          },
+          "label" : {
+            "description" : "Multilanguage label of an element.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#label",
+            "$ref" : "#/components/schemas/MultiLanguageText"
+          }
+        },
+        "required" : [ "label" ]
+      },
+      "MaterialFamilySetCharacteristic" : {
+        "description" : "Characteristic for a set of material families.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#MaterialFamilySetCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/MaterialFamilyEntity"
+        },
+        "uniqueItems" : true
+      },
+      "MaterialCharacteristic" : {
+        "description" : "Characteristic for a material.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#MaterialCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "belongsToMaterialFamilies" : {
+            "description" : "A material belongs to certain material families.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#belongsToMaterialFamilies",
+            "$ref" : "#/components/schemas/MaterialFamilySetCharacteristic"
+          }
+        },
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ElementAbstractEntity"
+        } ]
+      },
+      "CapabilityConstraintEntity" : {
+        "description" : "Element containing the samm properties of a capability constraint.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#CapabilityConstraintEntity",
+        "type" : "object",
+        "properties" : {
+          "capabilityConstraintProperties" : {
+            "description" : "Set of constraints restricting the capability.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#capabilityConstraintProperties",
+            "$ref" : "#/components/schemas/PropertySetCharacteristic"
+          },
+          "refersToMaterial" : {
+            "description" : "A specific material the capability constraint can refer to.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#refersToMaterial",
+            "$ref" : "#/components/schemas/MaterialCharacteristic"
+          }
+        }
+      },
+      "CapabilityConstraintSetCharacteristic" : {
+        "description" : "Characteristic for a set of capability constraint representations.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#CapabilityConstraintSetCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/CapabilityConstraintEntity"
+        },
+        "uniqueItems" : true
+      },
+      "CapabilitySetCharacteristic" : {
+        "description" : "Characteristic for a set of capability representations.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#CapabilitySetCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/CapabilityEntity"
+        },
+        "uniqueItems" : true
+      },
+      "MaterialSetCharacteristic" : {
+        "description" : "Characteristic for a set of materials.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#MaterialSetCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/MaterialEntity"
+        },
+        "uniqueItems" : true
+      },
+      "MachineToolEntity" : {
+        "description" : "Element containing the SAMM properties of a machine tool.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#MachineToolEntity",
+        "type" : "object",
+        "properties" : {
+          "canProcessMaterials" : {
+            "description" : "Set of materials the machine tool can utilize.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#canProcessMaterials",
+            "$ref" : "#/components/schemas/MaterialSetCharacteristic"
+          }
+        }
+      },
+      "MachineToolSetCharacteristic" : {
+        "description" : "Characteristic for a set of machine tools.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#MachineToolSetCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/MachineToolEntity"
+        },
+        "uniqueItems" : true
+      },
+      "MachineSetCharacteristic" : {
+        "description" : "Characteristic for a set of machine representations.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#MachineSetCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/MachineEntity"
+        },
+        "uniqueItems" : true
+      },
+      "ProductSetCharacteristic" : {
+        "description" : "Characteristic for a set of product representations.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#ProductSetCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/ProductEntity"
+        },
+        "uniqueItems" : true
+      },
+      "CertificateSetCharacteristic" : {
+        "description" : "Characteristic for a set of certificates.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#CertificateSetCharacteristic",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/CertificateEntity"
+        },
+        "uniqueItems" : true
+      }
+    }
+  },
+  "properties" : {
+    "processes" : {
+      "description" : "Set of production-relevant activities at any level of granularity that might affect materials and is performed by resources.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#processes",
+      "$ref" : "#/components/schemas/ProcessSetCharacteristic"
+    },
+    "machines" : {
+      "description" : "A set of machines used for production.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#machines",
+      "$ref" : "#/components/schemas/MachineSetCharacteristic"
+    },
+    "products" : {
+      "description" : "Set of physical objects being used as an input or created as an output of a production process.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#products",
+      "$ref" : "#/components/schemas/ProductSetCharacteristic"
+    },
+    "capabilities" : {
+      "description" : "Set of implementation-independent specifications of functions in industrial production to achieve an effect in the physical or virtual world.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#capabilities",
+      "$ref" : "#/components/schemas/CapabilitySetCharacteristic"
+    },
+    "machineTools" : {
+      "description" : "A set of machine tools.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#machineTools",
+      "$ref" : "#/components/schemas/MachineToolSetCharacteristic"
+    },
+    "certificates" : {
+      "description" : "Set of certificates.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.manufacturing_capability:3.1.0#certificates",
+      "$ref" : "#/components/schemas/CertificateSetCharacteristic"
+    }
+  },
+  "required" : [ "processes", "machines", "products", "capabilities", "machineTools", "certificates" ]
+}

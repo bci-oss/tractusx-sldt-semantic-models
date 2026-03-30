@@ -1,0 +1,236 @@
+---
+openapi: 3.0.3
+info:
+  title: material for homologation
+  version: v1
+  x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#MaterialForHomologation"
+servers:
+- url: catenax.io/api/v1
+  variables:
+    api-version:
+      default: v1
+paths:
+  /{tenant-id}/material-for-homologation:
+    get:
+      tags:
+      - MaterialForHomologation
+      operationId: getMaterialForHomologation
+      parameters:
+      - name: tenant-id
+        in: path
+        description: The ID of the tenant owning the requested Twin.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: start
+        in: query
+        description: Starting index which is starting by 0
+        required: false
+        schema:
+          type: number
+      - name: count
+        in: query
+        description: Number of items to return per call.
+        required: false
+        schema:
+          type: number
+      - name: totalItemCount
+        in: query
+        description: Flag that indicates that the total counts should be returned.
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          $ref: "#/components/responses/MaterialForHomologation"
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: "#/components/schemas/Error"
+    Error:
+      type: object
+      required:
+      - details
+      properties:
+        message:
+          type: string
+          minLength: 1
+        path:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          minLength: 1
+          additionalProperties:
+            type: object
+        code:
+          type: string
+          nullable: true
+    PagingSchema:
+      type: object
+      properties:
+        items:
+          type: array
+          $ref: "#/components/schemas/MaterialForHomologation"
+        totalItems:
+          type: number
+        totalPages:
+          type: number
+        pageSize:
+          type: number
+        currentPage:
+          type: number
+    ItemNumber1Trait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#ItemNumber1Trait"
+      description: Characteristic to describe the individual component to which the
+        materials belong.
+      maxLength: 200
+    ShareCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#ShareCharacteristic"
+      description: Characteristic to represent the proportion of the material.
+    MainGroupTrait1:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#MainGroupTrait1"
+      description: Characteristic to describe the main group classification of the
+        VDA standard 231-10.
+      maxLength: 2
+    SubgroupTrait1:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#SubgroupTrait1"
+      description: Characteristic to describe the first subgroup classification of
+        the VDA standard 231-11.
+      maxLength: 3
+    VDAStandardIdCharacteristic:
+      description: Characteristic to describe the classification of a VDA standard
+        ID.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#VDAStandardIdCharacteristic"
+      type: object
+      properties:
+        mainGroup:
+          description: Main group according to material classification VDA 231-10.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#mainGroup"
+          $ref: "#/components/schemas/MainGroupTrait1"
+        subgroup:
+          description: First subgroup according to material classification VDA 231-11.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#subgroup"
+          $ref: "#/components/schemas/SubgroupTrait1"
+      required:
+      - mainGroup
+      - subgroup
+    NameTrait1:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#NameTrait1"
+      description: Characteristic to designate the material.
+      maxLength: 50
+    StandardTrait1:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#StandardTrait1"
+      description: Describes the standard in which the material is listed.
+      maxLength: 20
+    MaterialNumberTrait1:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#MaterialNumberTrait1"
+      description: Characteristic to represent the number of the material in the standard.
+      maxLength: 20
+    MaterialForHomologationEntity:
+      description: Entity that represents the material that describes and calculates
+        the recycling quota for the homologation of a vehicle type.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#MaterialForHomologationEntity"
+      type: object
+      properties:
+        itemNumber:
+          description: Individual component to which the materials belong (no materials
+            are assigned to nodes).
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#itemNumber"
+          $ref: "#/components/schemas/ItemNumber1Trait"
+        share:
+          description: Proportion of the material.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#share"
+          $ref: "#/components/schemas/ShareCharacteristic"
+        vdaStandardId:
+          description: German quality management system standard.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#vdaStandardId"
+          $ref: "#/components/schemas/VDAStandardIdCharacteristic"
+        name:
+          description: Designation of the material.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#name"
+          $ref: "#/components/schemas/NameTrait1"
+        standard:
+          description: Standard in which the material is listed.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#standard"
+          $ref: "#/components/schemas/StandardTrait1"
+        materialNumber:
+          description: The number of the material in the standard.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#materialNumber"
+          $ref: "#/components/schemas/MaterialNumberTrait1"
+      required:
+      - itemNumber
+      - share
+      - vdaStandardId
+      - name
+      - standard
+      - materialNumber
+    MaterialForHomologationCharacteristic:
+      description: Characteristic to describe a set of materials that describe and
+        calculate the recycling quota for the homologation of a vehicle type.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#MaterialForHomologationCharacteristic"
+      type: array
+      items:
+        $ref: "#/components/schemas/MaterialForHomologationEntity"
+      uniqueItems: true
+    MaterialForHomologation:
+      description: Model to depict materials that describe and calculate the recycling
+        quota for the homologation of a vehicle type.
+      type: object
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#MaterialForHomologation"
+      properties:
+        materialForHomologation:
+          description: Property that references the material that describes and calculate
+            the recycling quota for the homologation of a vehicle type.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.material_for_homologation:1.0.0#materialForHomologation"
+          $ref: "#/components/schemas/MaterialForHomologationCharacteristic"
+      required:
+      - materialForHomologation
+  responses:
+    Unauthorized:
+      description: The requesting user or client is not authenticated.
+    Forbidden:
+      description: The requesting user or client is not authorized to access resources.
+    NotFoundError:
+      description: The requested resource has not been found.
+    ClientError:
+      description: Payload or user input is invalid. See error details in the payload
+        for more information.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    MaterialForHomologation:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PagingSchema"
+      description: The request was successful.
+  requestBodies:
+    MaterialForHomologation:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/MaterialForHomologation"
+      required: true

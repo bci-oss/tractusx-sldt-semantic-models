@@ -1,0 +1,1241 @@
+{
+  "$schema" : "http://json-schema.org/draft-04/schema",
+  "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#DigitalProductPassport",
+  "description" : "The Digital Product Passport (DPP) allows to share process and product-related information amongst supply chain businesses, authorities and consumers. The DPP allows for efficient information flows following best practices; and the possibility of accompanying the measures under this Regulation with mitigating measures so that impacts are expected to remain proportionate for SMEs.This is expected to increase transparency, both for supply chain businesses and for the general public, and increase efficiencies in terms of information transfer to support the data exchange between economic actors in integrating circularity in product design and manufacturing.\nIn particular, it is likely to help facilitate and streamline the monitoring and enforcement of the regulation carried out by EU and Member State authorities. It is also likely to provide a market-intelligence tool that may be used for revising and refining obligations in the future.\nThe DPP includes data about components, materials and chemical substances, information on repairability, spare parts, environmental impact and professional disposal for a product.\nThe data model will be updated, as newer versions of the regulation will be published.\nThis data model is based on the proposed Ecodesign Regulation (\"Proposal for a REGULATION OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL establishing a framework for setting ecodesign requirements for sustainable products and repealing Directive 2009/125/EC\" ESPR from March 30th, 2022 with some additional data points which can be found in the adopted Amendments from July 12th 2023 (Amendments adopted by the European Parliament on 12 July 2023 on the proposal for a regulation of the European Parliament and of the Council establishing a framework for setting eco-design requirements for sustainable products and repealing Directive 2009/125/EC).",
+  "type" : "object",
+  "components" : {
+    "schemas" : {
+      "Text" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Text",
+        "description" : "Describes a Property which contains plain text. This is intended exclusively for human readable strings, not for identifiers, measurement values, etc."
+      },
+      "StatusEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#StatusEnumeration",
+        "description" : "The current status of the product passport declared through either: draft, approved, invalid or expired.",
+        "enum" : [ "draft", "approved", "invalid", "expired" ]
+      },
+      "DateTrait" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#DateTrait",
+        "description" : "Constraint fo a timestamp in the format (yyyy-mm-dd).",
+        "pattern" : "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "CompanyIdentification" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#CompanyIdentification",
+        "description" : "Identification of the company or location of the company. In the CATENA-X network the BPN/L identification is needed."
+      },
+      "EconomicOperatorCharacteristic" : {
+        "description" : "Economic operator of the passport.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#EconomicOperatorCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "identification" : {
+            "description" : "The identification of the owner/economic operator of the passport. In the Catena-X network, the BPNL is used for the identification of companies and the information stored like contact information and addresses. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex III:\n(g) information related to the manufacturer, such as its unique operator identifier and the information referred to in Article 21(7);\n(h) unique operator identifiers other than that of the manufacturer.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#economicOperatorIdentification",
+            "$ref" : "#/components/schemas/CompanyIdentification"
+          },
+          "legitimization" : {
+            "description" : "The identification of the owner/economic operator of the passport. Proposed, according to ISO 15459, is the CIN (company identification code). Other identification numbers like the tax identification number, value added tax identification number, commercial register number and the like are also valid entries. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex III:\n(k) the [...] unique operator identifier code of the economic operator established in the Union responsible for carrying out the tasks set out in Article 4 of Regulation (EU) 2019/1020, or Article 15 of Regulation (EU) [?/?] on general product safety, or similar tasks pursuant to other EU legislation applicable to the product.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#economicOperatorLegitimization",
+            "$ref" : "#/components/schemas/Text"
+          }
+        },
+        "required" : [ "identification", "legitimization" ]
+      },
+      "IdentifierCharacteristic" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#IdentifierCharacteristic",
+        "description" : "Characteristic for Identifiers."
+      },
+      "MetadataCharacteristic" : {
+        "description" : "Characteristic for the passport metadata of the digital product passport.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#MetadataCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "version" : {
+            "description" : "The current version of the product passport. The possibility of modification/updating the product passport needs to include versioning of the dataset. This attribute is an internal versioning from the passport issuer.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#version",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "status" : {
+            "description" : "The current status of the product passport declared through either: draft, approved, invalid or expired.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#status",
+            "$ref" : "#/components/schemas/StatusEnumeration"
+          },
+          "expirationDate" : {
+            "description" : "The timestamp in the format (yyyy-mm-dd) for the product passport until when it is available or a comment describing this period. This attribute is mentioned in the ESPR proposal from March 30th, 2022 and changed by the amendments of the European Parliament from July 12th, 2023 Article 8:\n(2) (h) the period during which the product passport shall remain available which shall correspond to at least the expected lifetime of a specific product.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#expirationDate",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "issueDate" : {
+            "description" : "The timestamp in the format (yyyy-mm-dd) since when the product passport is available.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#issueDate",
+            "$ref" : "#/components/schemas/DateTrait"
+          },
+          "economicOperator" : {
+            "description" : "The economic operator of the passport.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#economicOperator",
+            "$ref" : "#/components/schemas/EconomicOperatorCharacteristic"
+          },
+          "predecessor" : {
+            "description" : "Identification of the preceding product passport. This could either be an identification of the registered twin, a redirection to a platform where it is available, or if there is no preceding passport, input null.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#predecessor",
+            "$ref" : "#/components/schemas/IdentifierCharacteristic"
+          }
+        },
+        "required" : [ "version", "expirationDate", "issueDate", "economicOperator", "predecessor" ]
+      },
+      "CodeTrait" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#CodeTrait",
+        "description" : "Constraint to limit the input to a valid ECLASS number. The constraint ensures that each pair of digits is followed by a hyphen, resulting in a pattern like \"00-00-00-00\" where the zeros can be replaced by any digit.",
+        "pattern" : "^\\d{2}-\\d{2}-\\d{2}-\\d{2}$"
+      },
+      "ClassCharacteristic" : {
+        "description" : "Characteristic to describe the ECLASS typology of a product.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#ClassCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "description" : "The associated product category coded name/code, according to ECLASS. The 8-digit  code consists of two digits for each of the four hierarchical levels.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#code",
+            "$ref" : "#/components/schemas/CodeTrait"
+          },
+          "definition" : {
+            "description" : "The associated product category preferred name/definition according to ECLASS. This preferred name is always associated with the code.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#definition",
+            "$ref" : "#/components/schemas/Text"
+          }
+        },
+        "required" : [ "code", "definition" ]
+      },
+      "TypologyCharacteristic" : {
+        "description" : "Characteristic to further describe product.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#TypologyCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "longName" : {
+            "description" : "The full name of the product as a general short product description. This provides the users of the product passport with relevant information about the product. It can also be a marketing slogan or short description with one to a few sentences.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#longName",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "class" : {
+            "description" : "The associated product category according to ECLASS. The ECLASS is the worldwide reference data standard for classifying and clearly describing products and services.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#class",
+            "$ref" : "#/components/schemas/ClassCharacteristic"
+          },
+          "shortName" : {
+            "description" : "The short name of the product. Short names can contain abbreviations.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#shortName",
+            "$ref" : "#/components/schemas/Text"
+          }
+        },
+        "required" : [ "longName", "shortName" ]
+      },
+      "GtinTrait" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#GtinTrait",
+        "description" : "This pattern allows for matching any GTIN version by specifying the required number of digits for each version.",
+        "pattern" : "^(?:\\d{8}|\\d{12}|\\d{13}|\\d{14})$"
+      },
+      "PartEntity" : {
+        "description" : "Information regarding  possible spare parts. This is mentioned in the ESPR proposal from March 30th, 2022 Annex I:\n(b) ease of repair and maintenance as expressed through: characteristics, availability and delivery time of spare parts, modularity, compatibility with commonly available spare parts, availability of repair and maintenance instructions, number of materials and components used, use of standard components, use of component and material coding standards for the identification of components and materials, number and complexity of processes and tools needed,  ease of non-destructive disassembly and re-assembly, conditions for access to product data, conditions for access to or use of hardware and software needed;\n(c) the Global Trade Identification Number as provided for in standard ISO/IEC 15459-6 or equivalent of products or their parts.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#PartEntity",
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "description" : "The name of the spare part. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex I:\n(b) ease of repair and maintenance as expressed through: characteristics, availability and delivery time of spare parts, modularity, compatibility with commonly available spare parts, availability of repair and maintenance instructions, number of materials and components used, use of standard components, use of component and material coding standards for the identification of components and materials, number and complexity of processes and tools needed,  ease of non-destructive disassembly and re-assembly, conditions for access to product data, conditions for access to or use of hardware and software needed.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#partName",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "gtin" : {
+            "description" : "GTIN stands for Global Trade Item Number. It is a unique and internationally recognized identifier used to identify products in the global marketplace. GTINs are typically encoded in barcodes and are used by retailers, manufacturers, and suppliers to track and manage their products throughout the supply chain. Valid inputs are all GTIN versions (GTIN-8, GTIN-12, GTIN-13, and GTIN-14).This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex III:\n(c) the Global Trade Identification Number as provided for in standard ISO/IEC 15459-6 or equivalent of products or their parts.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#gtin",
+            "$ref" : "#/components/schemas/GtinTrait"
+          }
+        }
+      },
+      "PartList" : {
+        "description" : "A list of spare parts with their respective identification and name.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#PartList",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/PartEntity"
+        }
+      },
+      "ProducerEntity" : {
+        "description" : "Entity for a possible spare part producer.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#ProducerEntity",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "description" : "The identifier of a spare part producer of the product. In the Catena-X network, the BPNL is used for the identification of companies and the information stored for this like contact information and addresses.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#producerIdentification",
+            "$ref" : "#/components/schemas/CompanyIdentification"
+          }
+        },
+        "required" : [ "id" ]
+      },
+      "ProducerList" : {
+        "description" : "List of possible spare part producer.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#ProducerList",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/ProducerEntity"
+        }
+      },
+      "EitherSparePart" : {
+        "description" : "Either spare parts and optional spare part producers (left) or the string value \"not applicable\" (right).",
+        "additionalProperties" : false,
+        "properties" : {
+          "left" : {
+            "description" : "Characteristic describing producers and spare parts.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#SparePartCharacteristic",
+            "type" : "object",
+            "properties" : {
+              "part" : {
+                "description" : "Spare parts with name and identification.",
+                "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#sparePart",
+                "$ref" : "#/components/schemas/PartList"
+              },
+              "producer" : {
+                "description" : "Producer of possible spare parts.",
+                "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#sparePartProducer",
+                "$ref" : "#/components/schemas/ProducerList"
+              }
+            },
+            "required" : [ "part" ]
+          },
+          "right" : {
+            "type" : "string",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#NotApplicableEnumeration",
+            "description" : "Enumeration with the value \"not applicable\".",
+            "enum" : [ "not applicable" ]
+          }
+        },
+        "oneOf" : [ {
+          "required" : [ "left" ]
+        }, {
+          "required" : [ "right" ]
+        } ],
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#EitherSparePart"
+      },
+      "ListTypeEnumerationName" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#ListTypeEnumerationName",
+        "description" : "Enumeration of different systems and organizations related to the identification and classification of chemical substances in the field of chemistry. The enumeration values are IUPAC, EC or CAS.",
+        "enum" : [ "IUPAC", "CAS", "EC" ]
+      },
+      "NameCharacteristic" : {
+        "description" : "Name Characteristic for the definition of the name.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#NameCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "description" : "The name, in accordance with the specification in the attribute for the list type, which is present in the product.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#name",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "type" : {
+            "description" : "The type of list used for the identification of the substances. Selected can be for example IUPAC, EC or CAS.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#listTypeName",
+            "$ref" : "#/components/schemas/ListTypeEnumerationName"
+          }
+        },
+        "required" : [ "name", "type" ]
+      },
+      "ConcentrationEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#ConcentrationEnumeration",
+        "description" : "Enumeration of possible units of concentration with percent, volume percent, parts per thousand, parts per million, parts per billion and parts per trillion.",
+        "enum" : [ "unit:partPerMillion", "unit:percent", "unit:percentVolume", "unit:partPerThousand", "unit:partPerTrillionUs", "unit:partPerBillionUs" ]
+      },
+      "ConcentrationValue" : {
+        "type" : "number",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#ConcentrationValue",
+        "description" : "Float number representing a concentration."
+      },
+      "RangeEntity" : {
+        "description" : "Entity for the concentration range with two values, the highest and the lowest of the concentration range.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#RangeEntity",
+        "type" : "object",
+        "properties" : {
+          "min" : {
+            "description" : "The minimum concentration of the substance of concern at the level of the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 7:\n(5) (c) [...] concentration range of the substances of concern, at the level of the product [...].",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#minConcentration",
+            "$ref" : "#/components/schemas/ConcentrationValue"
+          },
+          "max" : {
+            "description" : "The maximum concentration of the substance of concern at the level of the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 7:\n(5) (c) the concentration, maximum concentration or concentration range of the substances of concern, at the level of the product [...].",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#maxConcentration",
+            "$ref" : "#/components/schemas/ConcentrationValue"
+          }
+        },
+        "required" : [ "max" ]
+      },
+      "EitherConcentration" : {
+        "description" : "Characteristic with two possible values. Either the concentration range, which can be either the range or only the maximum concentration (left) or a single concentration (right).",
+        "additionalProperties" : false,
+        "properties" : {
+          "left" : {
+            "description" : "Range characteristic with two values, the highest and the lowest of the concentration range. Only providing the maximum range is also possible.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#RangeCharacteristic",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/RangeEntity"
+            }
+          },
+          "right" : {
+            "description" : "Single concentration characteristic for the actual concentration.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#ConcentrationCharacteristic",
+            "type" : "object",
+            "properties" : {
+              "value" : {
+                "description" : "Concentration of the substance of concern at the level of the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 7:\n(5) (c) the concentration [...] of the substances of concern, at the level of the product [...].",
+                "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#concentrationSingle",
+                "$ref" : "#/components/schemas/ConcentrationValue"
+              }
+            },
+            "required" : [ "value" ]
+          }
+        },
+        "oneOf" : [ {
+          "required" : [ "left" ]
+        }, {
+          "required" : [ "right" ]
+        } ],
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#EitherConcentration"
+      },
+      "ListTypeEnumerationId" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#ListTypeEnumerationId",
+        "description" : "Enumeration of different systems and organizations related to the identification and classification of chemical substances in the field of chemistry. The enumeration values are EC or CAS.",
+        "enum" : [ "CAS", "EC" ]
+      },
+      "IdEntity" : {
+        "description" : "Id Entity with identifier and list type.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#IdEntity",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "description" : "The substance identification, in accordance with the specification in the attribute for the list type.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#id",
+            "$ref" : "#/components/schemas/IdentifierCharacteristic"
+          },
+          "type" : {
+            "description" : "The type of list used for the identification of the substances. Selected can be for example CAS or EC.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#listTypeId",
+            "$ref" : "#/components/schemas/ListTypeEnumerationId"
+          }
+        },
+        "required" : [ "id", "type" ]
+      },
+      "IdList" : {
+        "description" : "List of ids for the identification.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#IdList",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/IdEntity"
+        }
+      },
+      "SubstanceEntity" : {
+        "description" : "Information regarding substances of concern in the product. Attributes are among others substance names, ids, concentration, location. This is mentioned in the ESPR proposal from March 30th, 2022 and changed by the amendments of the European Parliament from July 12th, 2023 Article 7:\n(5) (a) the International Union of Pure and Applied Chemistry (IUPAC) name of the substances of concern present in the product, including the chemical identification number, that is the European Inventory of Existing Commercial Chemical Substances (EINECS) or European List of Notified Chemical Substances (ELINCS) number or Chemical Abstract Service (CAS) number.\n(5) (b) the location of the substances of concern within the product.\n(5) (c) the concentration, maximum concentration or concentration range of the substances of concern, at the level of the product [...].\n(5) (c) provide exemptions for substances of concern or information elements from the information requirements referred to in the first subparagraph.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#SubstanceEntity",
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "description" : "The substance name, in accordance with the specification in the attribute for the list type, which is present in the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 and changed by the amendments of the European Parliament from July 12th, 2023 Article 7:\n(5) (a) the International Union of Pure and Applied Chemistry (IUPAC) name of the substances of concern present in the product, including the chemical identification number, that is the European Inventory of Existing Commercial Chemical Substances (EINECS) or European List of Notified Chemical Substances (ELINCS) number or Chemical Abstract Service (CAS) number.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#substanceName",
+            "$ref" : "#/components/schemas/NameCharacteristic"
+          },
+          "location" : {
+            "description" : "The location of the substances of concern within the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 7:\n(5) (b) the location of the substances of concern within the product.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#location",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "unit" : {
+            "description" : "The unit of concentration chosen from an enumeration: mass percent, volume percent, parts per thousand, parts per million, parts per billion and  parts per trillion.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#substanceUnit",
+            "$ref" : "#/components/schemas/ConcentrationEnumeration"
+          },
+          "concentration" : {
+            "description" : "Concentration of the substance of concern at the level of the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 7:\n(5) (c) the concentration, maximum concentration or concentration range of the substances of concern, at the level of the product [...].",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#concentration",
+            "$ref" : "#/components/schemas/EitherConcentration"
+          },
+          "id" : {
+            "description" : "The substance identification, in accordance with the specification in the attribute for the list type. This attribute is mentioned in the ESPR proposal from March 30th, 2022 and changed by the amendments of the European Parliament from July 12th, 2023 Article 7:\n(5) (a) the International Union of Pure and Applied Chemistry (IUPAC) name of the substances of concern present in the product, including the chemical identification number, that is the European Inventory of Existing Commercial Chemical Substances (EINECS) or European List of Notified Chemical Substances (ELINCS) number or Chemical Abstract Service (CAS) number.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#substanceIdentification",
+            "$ref" : "#/components/schemas/IdList"
+          },
+          "exemption" : {
+            "description" : "Exemptions to the substance of concern. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 7:\n(5) (c) provide exemptions for substances of concern or information elements from the information requirements referred to in the first subparagraph.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#exemption",
+            "$ref" : "#/components/schemas/Text"
+          }
+        },
+        "required" : [ "name", "location", "unit", "concentration", "id", "exemption" ]
+      },
+      "SubstanceCharacteristic" : {
+        "description" : "Either a list of substances (left) or the string value \"not applicable\" (right).",
+        "additionalProperties" : false,
+        "properties" : {
+          "left" : {
+            "description" : "Characteristic for a list of substances of concern.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#SubstanceList",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/SubstanceEntity"
+            }
+          },
+          "right" : {
+            "type" : "string",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#NotApplicableEnumeration",
+            "description" : "Enumeration with the value \"not applicable\".",
+            "enum" : [ "not applicable" ]
+          }
+        },
+        "oneOf" : [ {
+          "required" : [ "left" ]
+        }, {
+          "required" : [ "right" ]
+        } ],
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#SubstanceCharacteristic"
+      },
+      "HandlingCharacteristic" : {
+        "description" : "Characteristic to describe aspects which are connected with the handling of the product.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#HandlingCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "spareParts" : {
+            "description" : "The list of spare parts available for the product from various suppliers.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#spareParts",
+            "$ref" : "#/components/schemas/EitherSparePart"
+          },
+          "substanceOfConcern" : {
+            "description" : "Information regarding substances of concern in the product. Attributes are among others substance names, ids, concentration, location. This is mentioned in the ESPR proposal from March 30th, 2022 and changed by the amendments of the European Parliament from July 12th, 2023 Article 7:\n(5) (a) the International Union of Pure and Applied Chemistry (IUPAC) name of the substances of concern present in the product, including the chemical identification number, that is the European Inventory of Existing Commercial Chemical Substances (EINECS) or European List of Notified Chemical Substances (ELINCS) number or Chemical Abstract Service (CAS) number.\n(5) (b) the location of the substances of concern within the product.\n(5) (c) the concentration, maximum concentration or concentration range of the substances of concern, at the level of the product [...].\n(5) (c) provide exemptions for substances of concern or information elements from the information requirements referred to in the first subparagraph.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#substanceOfConcern",
+            "$ref" : "#/components/schemas/SubstanceCharacteristic"
+          }
+        },
+        "required" : [ "spareParts", "substanceOfConcern" ]
+      },
+      "StateEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#StateEnumeration",
+        "description" : "Enumeration with the values first life and second life.",
+        "enum" : [ "first life", "second life" ]
+      },
+      "Boolean" : {
+        "type" : "boolean",
+        "x-samm-aspect-model-urn" : "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Boolean",
+        "description" : "Represents a boolean value (i.e. a \"flag\")."
+      },
+      "MaterialEntity" : {
+        "description" : "Information regarding recycled and/or renewable materials in the product. Attributes are among others material names, ids and percentage. These attributes are mentioned in the ESPR proposal from March 30th, 2022 Article 1:\n(1) (f) recycled content in products.\nAnd complemented by the amendments of the European Parliament from July 12th, 2023 Annex I:\n(ha) use or content of sustainably sourced renewable materials.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#MaterialEntity",
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "description" : "The material name, in accordance with the specification in the attribute for the list type. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 1:\n(1) (f) recycled content in products.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#materialName",
+            "$ref" : "#/components/schemas/NameCharacteristic"
+          },
+          "recycled" : {
+            "description" : "A flag if the material is recovered recycled content from the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 1:\n(1) (f) recycled content in products.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#recycled",
+            "$ref" : "#/components/schemas/Boolean"
+          },
+          "renewable" : {
+            "description" : "A flag if the material is from a renewable resource that can be replenished. Renewable resources are those that can be reproduced by physical, chemical, or mechanical processes. These are the kind of resources that can be regenerated throughout time. Forest wood, for example, can be grown through reforestation. This attribute is complemented to the ESPR proposal by the amendments of the European Parliament from July 12th, 2023 Annex I:\n(ha) use or content of sustainably sourced renewable materials.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#renewable",
+            "$ref" : "#/components/schemas/Boolean"
+          },
+          "value" : {
+            "description" : "Concentration of the material in correlation to the material sum.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#materialValue",
+            "$ref" : "#/components/schemas/ConcentrationValue"
+          },
+          "unit" : {
+            "description" : "The unit of concentration chosen from an enumeration: mass percent, volume percent, parts per thousand, parts per million, parts per billion and  parts per trillion.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#substanceUnit",
+            "$ref" : "#/components/schemas/ConcentrationEnumeration"
+          },
+          "id" : {
+            "description" : "The material identification, in accordance with the specification in the attribute list type.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#materialIdentification",
+            "$ref" : "#/components/schemas/IdList"
+          }
+        },
+        "required" : [ "name", "recycled", "renewable", "value", "unit", "id" ]
+      },
+      "EitherMaterialCharacteristic" : {
+        "description" : "Either a material list (left) or the string value \"not applicable\" (right).",
+        "additionalProperties" : false,
+        "properties" : {
+          "left" : {
+            "description" : "A list of different materials in the product.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#MaterialList",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MaterialEntity"
+            }
+          },
+          "right" : {
+            "type" : "string",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#NotApplicableEnumeration",
+            "description" : "Enumeration with the value \"not applicable\".",
+            "enum" : [ "not applicable" ]
+          }
+        },
+        "oneOf" : [ {
+          "required" : [ "left" ]
+        }, {
+          "required" : [ "right" ]
+        } ],
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#EitherMaterialCharacteristic"
+      },
+      "EitherCritical" : {
+        "description" : "Either a list of critical materials (left) or the string value \"not applicable\" (right).",
+        "additionalProperties" : false,
+        "properties" : {
+          "left" : {
+            "description" : "The list of critical raw materials in the product (CRM) which is specified by EU.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#CriticalList",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "right" : {
+            "type" : "string",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#NotApplicableEnumeration",
+            "description" : "Enumeration with the value \"not applicable\".",
+            "enum" : [ "not applicable" ]
+          }
+        },
+        "oneOf" : [ {
+          "required" : [ "left" ]
+        }, {
+          "required" : [ "right" ]
+        } ],
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#EitherCritical"
+      },
+      "FootprintValueCharacteristic" : {
+        "type" : "number",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#FootprintValueCharacteristic",
+        "description" : "The value corresponding to the environmental footprint associated with the unit."
+      },
+      "CategoryEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#CategoryEnumeration",
+        "description" : "Enumeration of the 19 impact categories in accordance to EN15804+A2.",
+        "enum" : [ "Climate Change Total", "Climate Change Fossil", "Climate Change Biogenic Removals and Emissions", "Climate Change Land Use and Land Use Change", "Ozone Depletion", "Acidification", "Eutrophication Aquatic Freshwater", "Eutrophication Fresh Marine", "Eutrophication Terrestrial", "Photochemical Ozone Formation", "Abiotic Depletion- Minerals and Metals", "Fossil Fuels", "Water Use", "Particulate Matter Emissions", "Ionizing Radiation, Human Health", "Eco-Toxicity", "Human Toxicity, Cancer Effects", "Human Toxicity, Non-Cancer Effects", "Land Use Related Impacts/Soil Quality" ]
+      },
+      "FootprintEntity" : {
+        "description" : "Footprint Entity for the carbon and environmental footprint with the total value, unit, impact category type, lifecycle and rulebook.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#FootprintEntity",
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "description" : "The value of the environmental footprint or carbon footprint of the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex I:\n(l) the environmental footprint of the product, expressed as a quantification, in accordance with the applicable delegated act, of a product?s life cycle environmental impacts, whether in relation to one or more environmental impact categories or an aggregated set of impact categories;\n(m) the carbon footprint of the product.\n",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#footprintValue",
+            "$ref" : "#/components/schemas/FootprintValueCharacteristic"
+          },
+          "rulebook" : {
+            "description" : "The applied rulebook for the environmental footprint of the product.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#footprintRulebook",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "lifecycle" : {
+            "description" : "The lifecycle stage, to which the environmental footprint corresponds. These could be for example \"raw material acquisition and pre-processing\", \"main product production\", \"distribution\" or \"end of life and recycling\".",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#footprintLifecycle",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "unit" : {
+            "description" : "The unit of measurement of the environmental impact category. For each impact category a specific unit is used. For climate change/carbon footprint \"kg CO2 eq\" will be used. If an aggregation is used, utilize the normalization and weighting methods used in the referenced rulebook.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#footprintUnit",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "type" : {
+            "description" : "The type of the environmental footprint of the product. This could be one of the environmental impact categories. For the carbon footprint chose the \"Climate Change\" category from the environmental impact categories. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex I:\n(l) the environmental footprint of the product, expressed as a quantification, in accordance with the applicable delegated act, of a product?s life cycle environmental impacts, whether in relation to one or more environmental impact categories or an aggregated set of impact categories.\n(m) the carbon footprint of the product.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#footprintType",
+            "$ref" : "#/components/schemas/CategoryEnumeration"
+          }
+        },
+        "required" : [ "value", "rulebook", "lifecycle", "unit", "type" ]
+      },
+      "FootprintList" : {
+        "description" : "Footprint List for the carbon and environmental footprint.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#FootprintList",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/FootprintEntity"
+        }
+      },
+      "ProductEnvironmentalFootprintCharacteristic" : {
+        "description" : "The Product Environmental Footprint Characteristic with sustainability information.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#ProductEnvironmentalFootprintCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "environmental" : {
+            "description" : "The environmental footprint of the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex I:\n(l) the environmental footprint of the product, expressed as a quantification, in accordance with the applicable delegated act, of a product?s life cycle environmental impacts, whether in relation to one or more environmental impact categories or an aggregated set of impact categories.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#environmentalFootprint",
+            "$ref" : "#/components/schemas/FootprintList"
+          },
+          "carbon" : {
+            "description" : "The carbon footprint of the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex I:\n(m) the carbon footprint of the product.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#carbonFootprint",
+            "$ref" : "#/components/schemas/FootprintList"
+          }
+        },
+        "required" : [ "environmental", "carbon" ]
+      },
+      "SustainabilityCharacteristic" : {
+        "description" : "Characteristic which describes relevant information for the sustainability of the product.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#SustainabilityCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "state" : {
+            "description" : "The status of the product (first life or second life) to indicated, whether it is a used product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex I:\n(j) incorporation of used components.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#state",
+            "$ref" : "#/components/schemas/StateEnumeration"
+          },
+          "material" : {
+            "description" : "Information on different materials in the product.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#material",
+            "$ref" : "#/components/schemas/EitherMaterialCharacteristic"
+          },
+          "critical" : {
+            "description" : "A list of critical raw material names which are included at the level of the product. This attribute is complemented to the ESPR proposal by the amendments of the European Parliament from July 12th, 2023 Annex I:\n(hb) use or content of critical raw materials.\nIn Annex II of the connected proposal Act of Critical Raw Materials, a list of critical raw materials can be found.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#critical",
+            "$ref" : "#/components/schemas/EitherCritical"
+          },
+          "PEF" : {
+            "description" : "The carbon and environmental footprint of the product. These attributes are mentioned in the ESPR proposal from March 30th, 2022 Annex I:\n(l) the environmental footprint of the product, expressed as a quantification, in accordance with the applicable delegated act, of a product?s life cycle environmental impacts, whether in relation to one or more environmental impact categories or an aggregated set of impact categories;\n(m) the carbon footprint of the product.\nBoth are defined by Article 2:\n(23) ?environmental footprint? means a quantification of a product?s environmental impacts, whether in relation to a single environmental impact category or an aggregated set of impact categories based on the Product Environmental Footprint method;\n(25) ?carbon footprint? means the sum of greenhouse gas (GHG) emissions and GHG removals in a product system, expressed as CO2 equivalents and based on a life cycle assessment using the single impact category of climate change.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#productEnvironmentalFootprint",
+            "$ref" : "#/components/schemas/ProductEnvironmentalFootprintCharacteristic"
+          }
+        },
+        "required" : [ "state", "material", "critical", "PEF" ]
+      },
+      "LifeEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#LifeEnumeration",
+        "description" : "Enumeration with the possible units day, month, cycle, year and runningOrOperatingHour.",
+        "enum" : [ "unit:day", "unit:month", "unit:year", "unit:cycle", "unit:runningOrOperatingHour" ]
+      },
+      "LifeValueCharacteristic" : {
+        "type" : "number",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#LifeValueCharacteristic",
+        "description" : "Characteristic for the life span value as an integer."
+      },
+      "LifeTypeEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#LifeTypeEnumeration",
+        "description" : "Enumeration with the values guaranteed lifetime, technical lifetime and mean time between failures.",
+        "enum" : [ "guaranteed lifetime", "technical lifetime", "mean time between failures" ]
+      },
+      "LifespanEntity" : {
+        "description" : "Entity for the lifespan of a product with type, unit and value.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#LifespanEntity",
+        "type" : "object",
+        "properties" : {
+          "unit" : {
+            "description" : "The unit of the respective lifespan expressed through the possible units day, month, cycle, year and runningOrOperatingHour.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#lifeUnit",
+            "$ref" : "#/components/schemas/LifeEnumeration"
+          },
+          "value" : {
+            "description" : "The value as an integer for the respective lifespan.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#lifeValue",
+            "$ref" : "#/components/schemas/LifeValueCharacteristic"
+          },
+          "key" : {
+            "description" : "The type of lifespan represented with the values guaranteed lifetime, technical lifetime and mean time between failures. This attribute is mentioned in the ESPR proposal from March 30th, 2022 ANNEX I:\n(a) durability and reliability of the product or its components as expressed through the product?s guaranteed lifetime, technical lifetime [or] mean time between failures [...].",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#lifeType",
+            "$ref" : "#/components/schemas/LifeTypeEnumeration"
+          }
+        },
+        "required" : [ "unit", "value", "key" ]
+      },
+      "LifespanList" : {
+        "description" : "List of different life spans of a product.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#LifespanList",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/LifespanEntity"
+        }
+      },
+      "DimensionValueCharacteristic" : {
+        "type" : "number",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#DimensionValueCharacteristic",
+        "description" : "The value associated with the unit expressed as float."
+      },
+      "LinearUnitEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#LinearUnitEnumeration",
+        "description" : "The unit of a linear attribute. For height, width, length and diameter possible units are millimetre, centimetre and metre.",
+        "enum" : [ "unit:millimetre", "unit:metre", "unit:centimetre" ]
+      },
+      "LinearCharacteristic" : {
+        "description" : "Characteristic for linear measurements of an item.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#LinearCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "description" : "The value associated with the unit.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#dimensionValue",
+            "$ref" : "#/components/schemas/DimensionValueCharacteristic"
+          },
+          "unit" : {
+            "description" : "The unit of a physical dimensions attribute. For linear attributes possible units are millimetre, metre and centimetre.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#linearUnit",
+            "$ref" : "#/components/schemas/LinearUnitEnumeration"
+          }
+        },
+        "required" : [ "value", "unit" ]
+      },
+      "MassUnitEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#MassUnitEnumeration",
+        "description" : "Enumeration for mass units with kilogram and gram.",
+        "enum" : [ "unit:kilogram", "unit:gram" ]
+      },
+      "MassCharacteristic" : {
+        "description" : "Characteristic for mass measurements of an item.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#MassCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "description" : "The value associated with the unit.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#dimensionValue",
+            "$ref" : "#/components/schemas/DimensionValueCharacteristic"
+          },
+          "unit" : {
+            "description" : "The unit of a physical dimensions attribute. For mass attributes weight possible units are gram and kilogram.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#massUnit",
+            "$ref" : "#/components/schemas/MassUnitEnumeration"
+          }
+        },
+        "required" : [ "value", "unit" ]
+      },
+      "CapacityUnitEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#CapacityUnitEnumeration",
+        "description" : "Enumeration for capacity units.",
+        "enum" : [ "unit:cubicMetre", "unit:litre", "unit:millilitre", "unit:cubicCentimetre" ]
+      },
+      "CapacityCharacteristic" : {
+        "description" : "Characteristic for capacity measurements of an item.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#CapacityCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "description" : "The value associated with the unit.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#dimensionValue",
+            "$ref" : "#/components/schemas/DimensionValueCharacteristic"
+          },
+          "unit" : {
+            "description" : "The unit of a physical dimensions attribute. For capacity attributes the units are cubic metre, cubic centimetre, millilitre and litre.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#capacityUnit",
+            "$ref" : "#/components/schemas/CapacityUnitEnumeration"
+          }
+        },
+        "required" : [ "value", "unit" ]
+      },
+      "EitherCharacteristic" : {
+        "description" : "Either a volume (left) or a weight (right) are mandatory.",
+        "additionalProperties" : false,
+        "properties" : {
+          "left" : {
+            "description" : "Characteristic for capacity measurements of an item.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#CapacityCharacteristic",
+            "type" : "object",
+            "properties" : {
+              "value" : {
+                "description" : "The value associated with the unit.",
+                "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#dimensionValue",
+                "$ref" : "#/components/schemas/DimensionValueCharacteristic"
+              },
+              "unit" : {
+                "description" : "The unit of a physical dimensions attribute. For capacity attributes the units are cubic metre, cubic centimetre, millilitre and litre.",
+                "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#capacityUnit",
+                "$ref" : "#/components/schemas/CapacityUnitEnumeration"
+              }
+            },
+            "required" : [ "value", "unit" ]
+          },
+          "right" : {
+            "description" : "Characteristic for mass measurements of an item.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#MassCharacteristic",
+            "type" : "object",
+            "properties" : {
+              "value" : {
+                "description" : "The value associated with the unit.",
+                "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#dimensionValue",
+                "$ref" : "#/components/schemas/DimensionValueCharacteristic"
+              },
+              "unit" : {
+                "description" : "The unit of a physical dimensions attribute. For mass attributes weight possible units are gram and kilogram.",
+                "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#massUnit",
+                "$ref" : "#/components/schemas/MassUnitEnumeration"
+              }
+            },
+            "required" : [ "value", "unit" ]
+          }
+        },
+        "oneOf" : [ {
+          "required" : [ "left" ]
+        }, {
+          "required" : [ "right" ]
+        } ],
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#EitherCharacteristic"
+      },
+      "PhysicalDimensionCharacteristic" : {
+        "description" : "Characteristic for physical dimensions with linear, mass and capacity attributes.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#PhysicalDimensionCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "width" : {
+            "description" : "The width of the item measured in a specific linear unit which can be declared in the corresponding unit attribute.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#width",
+            "$ref" : "#/components/schemas/LinearCharacteristic"
+          },
+          "length" : {
+            "description" : "The length of the item measured in a specific linear unit which can be declared in the corresponding unit attribute.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#length",
+            "$ref" : "#/components/schemas/LinearCharacteristic"
+          },
+          "diameter" : {
+            "description" : "The diameter of the item, if applicable, measured in a specific linear unit which can be declared in the corresponding unit attribute.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#diameter",
+            "$ref" : "#/components/schemas/LinearCharacteristic"
+          },
+          "height" : {
+            "description" : "The height of the item measured in a specific linear unit which can be declared in the corresponding unit attribute.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#height",
+            "$ref" : "#/components/schemas/LinearCharacteristic"
+          },
+          "grossWeight" : {
+            "description" : "The gross weight of the item measured in a specific mass unit which can be declared in the corresponding unit attribute. Gross weight refers to the total weight of a product, including the weight of the packaging. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 7:\n(2) (b) (i) information on the performance of the product in relation to the product parameters referred to in Annex I;\nAnnex I (i) weight and volume of the product and its packaging, and the product-to-packaging ratio.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#grossWeight",
+            "$ref" : "#/components/schemas/MassCharacteristic"
+          },
+          "grossVolume" : {
+            "description" : "The gross volume of the item measured in a specific capacity unit which can be declared in the corresponding unit attribute. Gross volume refers to the total volume of a product, including the volume of the packaging. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 7:\n(2) (b) (i) information on the performance of the product in relation to the product parameters referred to in Annex I;\nAnnex I (i) weight and volume of the product and its packaging, and the product-to-packaging ratio.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#grossVolume",
+            "$ref" : "#/components/schemas/CapacityCharacteristic"
+          },
+          "weightOrVolume" : {
+            "description" : "Weight or volume of the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 7:\n(2) (b) (i) information on the performance of the product in relation to the product parameters referred to in Annex I;\nAnnex I (i) weight and volume of the product [...].",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#weightOrVolume",
+            "$ref" : "#/components/schemas/EitherCharacteristic"
+          }
+        },
+        "required" : [ "grossWeight", "grossVolume", "weightOrVolume" ]
+      },
+      "PhysicalStateEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#PhysicalStateEnumeration",
+        "description" : "Enumeration with the values solid, liquid, gas and plasma.",
+        "enum" : [ "solid", "liquid", "gas", "plasma" ]
+      },
+      "Characteristics" : {
+        "description" : "Defines a set of specific characteristics of a product.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#Characteristics",
+        "type" : "object",
+        "properties" : {
+          "lifespan" : {
+            "description" : "The type of lifespan represented with the values guaranteed lifetime, technical lifetime and mean time between failures. Both can be described through the attributes: type, which defines the type such as guaranteed lifetime or technical lifetime, the unit for the lifetime, and the value represented by an integer. These attributes are mentioned in the ESPR proposal from March 30th, 2022 ANNEX I:\n(a) durability and reliability of the product or its components as expressed through the products guaranteed lifetime, technical lifetime [or] mean time between failures [...].",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#lifespan",
+            "$ref" : "#/components/schemas/LifespanList"
+          },
+          "physicalDimension" : {
+            "description" : "Physical dimensions are properties  associated with physical quantities for purposes of classification or differentiation. Mentioned are a part of these requirements in the ESPR proposal from March 30th, 2022 Article 7:\n(2) (b) (i) information on the performance of the product in relation to the product parameters referred to in Annex I;\nAnnex I (i) weight and volume of the product and its packaging, and the product-to-packaging ratio.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#physicalDimension",
+            "$ref" : "#/components/schemas/PhysicalDimensionCharacteristic"
+          },
+          "physicalState" : {
+            "description" : "The physical state of the item. There are four states of matter solid, liquid, gas and plasma which can be chosen from an enumeration.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#physicalState",
+            "$ref" : "#/components/schemas/PhysicalStateEnumeration"
+          }
+        },
+        "required" : [ "lifespan", "physicalDimension", "physicalState" ]
+      },
+      "CommercialCharacteristic" : {
+        "description" : "Commercial information of the product.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#CommercialCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "placedOnMarket" : {
+            "description" : "The timestamp in the format (yyyy-mm-dd) with or without time zone when the product was put in the market.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#placedOnMarket",
+            "$ref" : "#/components/schemas/DateTrait"
+          }
+        }
+      },
+      "EoriTrait" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#EoriTrait",
+        "description" : "Constraint with a pattern which ensures that the EORI number starts with two alphanumeric characters, followed by two alphabetic characters, and ends with 2 to 15 alphanumeric characters.",
+        "pattern" : "^[A-Z]{2}[A-Z0-9]{1,18}$"
+      },
+      "EitherImporter" : {
+        "description" : "Either the importer with its ids (left) or the string value \"not applicable\" (right).",
+        "additionalProperties" : false,
+        "properties" : {
+          "left" : {
+            "description" : "Characteristic with information regarding the importer.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#ImporterCharacteristic",
+            "type" : "object",
+            "properties" : {
+              "eori" : {
+                "description" : "An economic operator established in the customs territory of the Union needs, for customs purposes, an EORI number. EORI stands for economic operators registration and identification number. In this case, the importer's EORI must be provided. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex III:\n(j) information related to the importer, including the information referred to in Article 23(3) and its EORI number.",
+                "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#eori",
+                "$ref" : "#/components/schemas/EoriTrait"
+              },
+              "id" : {
+                "description" : "The importer of the product, if different from the owner of the passport. In the Catena-X network, the BPNL is used for the identification of companies and the information stored for this like contact information and addresses.\nThis attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex III:\n(j) information related to the importer, including the information referred to in Article 23(3) and its EORI number;\nArticle 23 states:\n(3) Importers shall indicate on the product their name, registered trade name or registered trade mark and the postal address and, where available, electronic means of communication, where they can be contacted or, where this is not possible, on the packaging, in a document accompanying the product or, where available, in a product passport. The contact details shall be clear, understandable and legible.",
+                "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#importerIdentification",
+                "$ref" : "#/components/schemas/CompanyIdentification"
+              }
+            },
+            "required" : [ "eori", "id" ]
+          },
+          "right" : {
+            "type" : "string",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#NotApplicableEnumeration",
+            "description" : "Enumeration with the value \"not applicable\".",
+            "enum" : [ "not applicable" ]
+          }
+        },
+        "oneOf" : [ {
+          "required" : [ "left" ]
+        }, {
+          "required" : [ "right" ]
+        } ],
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#EitherImporter"
+      },
+      "ManufacturerCharacteristic" : {
+        "description" : "Manufacturing information.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#ManufacturerCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "facility" : {
+            "description" : "The facility identification, where the main manufacturing took place. In the CATENA-X use case, the BPNS can be stated. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex III:\n(i) unique facility identifiers.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#facilityIdentification",
+            "$ref" : "#/components/schemas/CompanyIdentification"
+          },
+          "manufacturer" : {
+            "description" : "The main manufacturer, if different from the passport owner, represented by an identification number. In the Catena-X use case, the BPNL can be stated. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex III:\n(g) information related to the manufacturer, such as its unique operator identifier and the information referred to in Article 21(7).",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#manufacturerIdentification",
+            "$ref" : "#/components/schemas/CompanyIdentification"
+          },
+          "manufacturingDate" : {
+            "description" : "The timestamp in the format (yyyy-mm-dd) of the manufacturing date as the final step in production process (e.g. final quality check, ready-for-shipment event).",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#manufacturingDate",
+            "$ref" : "#/components/schemas/DateTrait"
+          }
+        },
+        "required" : [ "facility", "manufacturer" ]
+      },
+      "OperationCharacteristic" : {
+        "description" : "Operational information of the product.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#OperationCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "importer" : {
+            "description" : "Information regarding the importer of the product, if different from the owner of the passport. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Annex III:\n(j) information related to the importer, including the information referred to in Article 23(3) and its EORI number;\nArticle 23 states:\n(3) Importers shall indicate on the product their name, registered trade name or registered trade mark and the postal address and, where available, electronic means of communication, where they can be contacted or, where this is not possible, on the packaging, in a document accompanying the product or, where available, in a product passport. The contact details shall be clear, understandable and legible.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#importer",
+            "$ref" : "#/components/schemas/EitherImporter"
+          },
+          "manufacturer" : {
+            "description" : "Manufacturing information of the product. In the CATENA-X use case, the BPNL and BPNS can be stated. These attributes are mentioned in the ESPR proposal from March 30th, 2022 Annex III:\n(g) information related to the manufacturer, such as its unique operator identifier and the information referred to in Article 21(7);\n(i) unique facility identifiers.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#manufacturer",
+            "$ref" : "#/components/schemas/ManufacturerCharacteristic"
+          }
+        },
+        "required" : [ "importer", "manufacturer" ]
+      },
+      "CodeEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#CodeEnumeration",
+        "description" : "Enumeration for GTIN, hash, DID, ISBN, TARIC or other.",
+        "enum" : [ "TARIC", "GTIN", "DID", "ISBN", "hash", "other" ]
+      },
+      "CodeEntity" : {
+        "description" : "Code entity with code key and value.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#CodeEntity",
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "description" : "The code key for the identification of the product. These are GTIN, hash, DID, ISBN, TARIC or other which can be chosen from an enumeration. This attribute is mentioned in the ESPR proposal from March 30th, 2022 ANNEX III:\n(b) the unique product identifier at the level indicated in the applicable delegated act adopted pursuant to Article 4;\n(c) the Global Trade Identification Number as provided for in standard ISO/IEC 15459-6 or equivalent of products or their parts;\n(d) relevant commodity codes, such as a TARIC code as defined in Council Regulation (EEC) No 2658/87.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#codeKey",
+            "$ref" : "#/components/schemas/CodeEnumeration"
+          },
+          "value" : {
+            "description" : "The code value for the identification of the product in regard to the chosen code name.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#codeValue",
+            "$ref" : "#/components/schemas/IdentifierCharacteristic"
+          }
+        },
+        "required" : [ "key", "value" ]
+      },
+      "CodeList" : {
+        "description" : "A list of additional codes.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#CodeList",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/CodeEntity"
+        }
+      },
+      "IdentifierEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#IdentifierEnumeration",
+        "description" : "Enumeration with \"PartInstanceId\" \"BatchId\" and \"ModelId\".",
+        "enum" : [ "PartInstanceId", "BatchId", "ModelId" ]
+      },
+      "LocalIdentifierCharacteristic" : {
+        "description" : "Local Identifier Characteristic for the product.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#LocalIdentifierCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "description" : "For traceability of the product, the ESPR requires identification on the most specific level. It can be chosen from \"PartInstanceId\" \"BatchId\" \"ModelId\" from an enumeration. This attribute is mentioned in the ESPR proposal from March 30th, 2022 ANNEX III:\n(b) the unique product identifier at the level indicated in the applicable delegated act adopted pursuant to Article 4.\nAdditionally in Article 9 regarding general requirements for the product passport is stated that:\n(e) the information included in the product passport shall refer to the product model, batch, or item as specified in the delegated act adopted pursuant to Article 4.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#identifierKey",
+            "$ref" : "#/components/schemas/IdentifierEnumeration"
+          },
+          "value" : {
+            "description" : "The value of the corresponding identifier for part/item, batch or model. This attribute is mentioned in the ESPR proposal from March 30th, 2022 ANNEX III:\n(b) the unique product identifier at the level indicated in the applicable delegated act adopted pursuant to Article 4.\nAdditionally in Article 9 regarding general requirements for the product passport is stated that:\n(e) the information included in the product passport shall refer to the product model, batch, or item as specified in the delegated act adopted pursuant to Article 4.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#identifierValue",
+            "$ref" : "#/components/schemas/IdentifierCharacteristic"
+          }
+        },
+        "required" : [ "key", "value" ]
+      },
+      "DataCarrierCharacteristic" : {
+        "description" : "Data Carrier Characteristic for the product.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#DataCarrierCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "carrierType" : {
+            "description" : "The type of data carrier such as a QR code on the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 8:\n(2) (b) the types of data carrier to be used.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#carrierType",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "carrierLayout" : {
+            "description" : "The positioning of data carrier on the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 Article 8:\n(2) (c) the layout in which the data carrier shall be presented and its positioning.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#carrierLayout",
+            "$ref" : "#/components/schemas/Text"
+          }
+        },
+        "required" : [ "carrierType", "carrierLayout" ]
+      },
+      "IdentificationCharacteristic" : {
+        "description" : "Identification information of the product.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#IdentificationCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "additionalCode" : {
+            "description" : "Codes for identification can be for example commodity codes. In Europe, two commonly used codes for goods classification are the Harmonized System (HS) code and the Combined Nomenclature (CN). Other codes can also be given.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#additionalCode",
+            "$ref" : "#/components/schemas/CodeList"
+          },
+          "localIdentifier" : {
+            "description" : "The unique identifier of the product. This attribute is mentioned in the ESPR proposal from March 30th, 2022 ANNEX III:\n(b) the unique product identifier at the level indicated in the applicable delegated act adopted pursuant to Article 4.\nAdditionally in Article 9 regarding general requirements for the product passport is stated that:\n(e) the information included in the product passport shall refer to the product model, batch, or item as specified in the delegated act adopted pursuant to Article 4.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#localIdentifier",
+            "$ref" : "#/components/schemas/LocalIdentifierCharacteristic"
+          },
+          "dataCarrier" : {
+            "description" : "The type and layout of the data carrier on the product. These are mentioned in the ESPR proposal from March 30th, 2022 Article 8:\n(b) the types of data carrier to be used;\n(c) the layout in which the data carrier shall be presented and its positioning.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#dataCarrier",
+            "$ref" : "#/components/schemas/DataCarrierCharacteristic"
+          }
+        },
+        "required" : [ "additionalCode", "localIdentifier" ]
+      },
+      "SourceCategoryEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#SourceCategoryEnumeration",
+        "description" : "The types of sources that can be linked in a digital product passport can vary depending on the nature of the product and the information that needs to be included. This is an enumeration of possible sources.",
+        "enum" : [ "Product Specifications", "Manufacturer Information", "User Manuals and Guides", "Certifications and Compliance", "Product Images and Videos", "Warranty Information", "Reviews and Ratings", "Product Variations", "Supply Chain Information", "Environmental Impact", "Compatibility and Accessories", "FAQs and Support", "Purchase and Retail Information", "Privacy and Data Handling", "Third-Party Integrations", "Legal Information", "Safety Information", "Repair and Installation", "Waste Generation and Prevention", "Specific Voluntary Labels", "Product Packaging", "Return and Disposal", "End of Life", "Material and Substance Information", "Technical Documentation", "Other" ]
+      },
+      "SourceEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#SourceEnumeration",
+        "description" : "Enumeration on different sources.",
+        "enum" : [ "URL", "PDF", "Other" ]
+      },
+      "HeaderTrait" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#HeaderTrait",
+        "description" : "Constraint for a maximum of 100 characters.",
+        "maxLength" : 100
+      },
+      "DocumentEntity" : {
+        "description" : "Document entity with header, content, category and type.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#DocumentEntity",
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "description" : "The content of the document e.g a link.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#content",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "category" : {
+            "description" : "The category in which the document can be sorted. These are mentioned in the ESPR proposal from March 30th, 2022 ANNEX III:\n(e) compliance documentation and information required under this Regulation or other Union law applicable to the product, such as the declaration of conformity, technical documentation or conformity certificates;\nANNEX IV states additional information regarding the content of the technical documentation\nFurther information on documents are mentioned in the proposal from March 30th, 2022 ANNEX III:\n(f) user manuals, instructions, warnings or safety information, as required by other Union legislation applicable to the product.\nAdditionally requirements are mentioned in Article 21:\n(7) Manufacturers shall ensure that that a product covered by a delegated act adopted pursuant to Article 4 is accompanied by instructions that enable consumers and other end-users to safely assemble, install, operate, store, maintain, repair and dispose of the product in a language that can be easily understood by consumers and other end-users, as determined by the Member State concerned. Such instructions shall be clear, understandable and legible and include at least the information specified in the delegated acts adopted pursuant to Article 4 and pursuant to Article 7(2)(b), point (ii).\nArticle 7 states additionally:\n(2) (b) (ii) information for consumers and other end-users on how to install, use, maintain and repair the product in order to minimise its impact on the environment and to ensure optimum durability, as well as on how to return or dispose of the product at end-of-life;\n(2) (b) (iii) information for treatment facilities on disassembly, recycling, or disposal at end-of-life;\n(2) (b) (iv) other information that may influence the way the product is handled by parties other than the manufacturer in order to improve performance in relation to product parameters referred to in Annex I.\n(5) (d) relevant instructions for the safe use of the product.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#category",
+            "$ref" : "#/components/schemas/SourceCategoryEnumeration"
+          },
+          "type" : {
+            "description" : "The type of content which can be expected in the \"content\" property. Examples are a link, restricted link, pdf, excel, etc.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#contentType",
+            "$ref" : "#/components/schemas/SourceEnumeration"
+          },
+          "header" : {
+            "description" : "The header as a short description of the document with a maximum of 100 characters.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#header",
+            "$ref" : "#/components/schemas/HeaderTrait"
+          }
+        },
+        "required" : [ "content", "category", "type", "header" ]
+      },
+      "SourceList" : {
+        "description" : "A list of documents.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#SourceList",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/DocumentEntity"
+        }
+      },
+      "UnitCatalog" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#UnitCatalog",
+        "description" : "Link to the unit catalog with all possible units in the format \"unit:xxx\"."
+      },
+      "DataTypeEnumeration" : {
+        "type" : "string",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#DataTypeEnumeration",
+        "description" : "Data type that describe the content of the attributes children and data. In case \"object\" is selected in the enumeration, the children field will be used in the AdditionalDataEntity instead of the \"data\" property. If it is an other type, the content will be specified in \"data\" as a string.",
+        "enum" : [ "array", "object", "xsd:string", "xsd:integer", "xsd:boolean", "xsd:double", "xsd:float", "xsd:byte" ]
+      },
+      "TypeCharacteristic" : {
+        "description" : "Characteristic for the data type.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#TypeCharacteristic",
+        "type" : "object",
+        "properties" : {
+          "typeUnit" : {
+            "description" : "Choose a unit type from the unit catalog, or if the property \"children\" is filled, leave empty.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#typeUnit",
+            "$ref" : "#/components/schemas/UnitCatalog"
+          },
+          "dataType" : {
+            "description" : "Data type that describe the content of the attributes children and data. In case \"object\" is selected in the enumeration, the children field will be used in the AdditionalDataEntity instead of the \"data\" property. If it is an other type, the content will be specified in \"data\" as a string.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#dataType",
+            "$ref" : "#/components/schemas/DataTypeEnumeration"
+          }
+        },
+        "required" : [ "dataType" ]
+      },
+      "AdditionalDataEntity" : {
+        "description" : "Entity with additional data. Properties are label, description, type, data and children. Either the fields data or children filled. Children constructs a hierarchy with the same attributes. Data is filled as the end of an path/leaf.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#AdditionalDataEntity",
+        "type" : "object",
+        "properties" : {
+          "label" : {
+            "description" : "The human readable name of the attribute.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#label",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "description" : {
+            "description" : "The description of the attribute context.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#description",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "type" : {
+            "description" : "The complex description of the type.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#type",
+            "$ref" : "#/components/schemas/TypeCharacteristic"
+          },
+          "data" : {
+            "description" : "The content from the attribute which is a depended of the data type and typeUnit.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#data",
+            "$ref" : "#/components/schemas/Text"
+          },
+          "children" : {
+            "description" : "Children of the hierarchy.",
+            "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#children",
+            "$ref" : "#/components/schemas/AdditionalDataList"
+          }
+        },
+        "required" : [ "label", "description", "type" ]
+      },
+      "AdditionalDataList" : {
+        "description" : "List of additional data.",
+        "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#AdditionalDataList",
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/AdditionalDataEntity"
+        }
+      }
+    }
+  },
+  "properties" : {
+    "metadata" : {
+      "description" : "Metadata of the product passport regarding issue and expiration date, version, status and the economic operator. These are mentioned in the ESPR proposal from March 30th, 2022 and some changed by the amendments of the European Parliament from July 12th, 2023 Article 8:\n(2) (h) the period during which the product passport shall remain available which shall correspond to at least the expected lifetime of a specific product.\nAdditionally Annex III mentions:\n(g) information related to the manufacturer, such as its unique operator identifier and the information referred to in Article 21(7);\n(h) unique operator identifiers other than that of the manufacturer;\n(k) the [...] unique operator identifier code of the economic operator established in the Union responsible for carrying out the tasks set out in Article 4 of Regulation (EU) 2019/1020, or Article 15 of Regulation (EU) [?/?] on general product safety, or similar tasks pursuant to other EU legislation applicable to the product.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#metadata",
+      "$ref" : "#/components/schemas/MetadataCharacteristic"
+    },
+    "typology" : {
+      "description" : "Properties further describing the product type.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#typology",
+      "$ref" : "#/components/schemas/TypologyCharacteristic"
+    },
+    "handling" : {
+      "description" : "Properties connected with the handling of the product.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#handling",
+      "$ref" : "#/components/schemas/HandlingCharacteristic"
+    },
+    "sustainability" : {
+      "description" : "Properties which are relevant for the sustainability of the product.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#sustainability",
+      "$ref" : "#/components/schemas/SustainabilityCharacteristic"
+    },
+    "characteristics" : {
+      "description" : "Defines specific characteristics of a product.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#characteristics",
+      "$ref" : "#/components/schemas/Characteristics"
+    },
+    "commercial" : {
+      "description" : "Commercial information of the product.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#commercial",
+      "$ref" : "#/components/schemas/CommercialCharacteristic"
+    },
+    "operation" : {
+      "description" : "Operational information of the product.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#operation",
+      "$ref" : "#/components/schemas/OperationCharacteristic"
+    },
+    "identification" : {
+      "description" : "Identification information of the product, especially identifiers and codes.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#identification",
+      "$ref" : "#/components/schemas/IdentificationCharacteristic"
+    },
+    "sources" : {
+      "description" : "Documents which are mandatory if applicable for the product. These are mentioned in the ESPR proposal from March 30th, 2022 ANNEX III:\n(e) compliance documentation and information required under this Regulation or other Union law applicable to the product, such as the declaration of conformity, technical documentation or conformity certificates;\n(f) user manuals, instructions, warnings or safety information, as required by other Union legislation applicable to the product.\nAdditionally requirements are mentioned in Article 21:\n(7) Manufacturers shall ensure that that a product covered by a delegated act adopted pursuant to Article 4 is accompanied by instructions that enable consumers and other end-users to safely assemble, install, operate, store, maintain, repair and dispose of the product in a language that can be easily understood by consumers and other end-users, as determined by the Member State concerned. Such instructions shall be clear, understandable and legible and include at least the information specified in the delegated acts adopted pursuant to Article 4 and pursuant to Article 7(2)(b), point (ii).\nArticle 7 states additionally:\n(2) (b) (ii) information for consumers and other end-users on how to install, use, maintain and repair the product in order to minimise its impact on the environment and to ensure optimum durability, as well as on how to return or dispose of the product at end-of-life;\n(2) (b) (iii) information for treatment facilities on disassembly, recycling, or disposal at end-of-life;\n(2) (b) (iv) other information that may influence the way the product is handled by parties other than the manufacturer in order to improve performance in relation to product parameters referred to in Annex I.\n(5) (d) relevant instructions for the safe use of the product.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#sources",
+      "$ref" : "#/components/schemas/SourceList"
+    },
+    "additionalData" : {
+      "description" : "Data in form of open fields which need to be transferred in addition. The regulation is still under development and may change in the future. To accommodate this, additional data allows the option to include additional data required by future changes to the regulation. In addition, the DPP can be easily updated and adapted to the new requirements.",
+      "x-samm-aspect-model-urn" : "urn:samm:io.catenax.generic.digital_product_passport:2.0.0#additionalData",
+      "$ref" : "#/components/schemas/AdditionalDataList"
+    }
+  },
+  "required" : [ "metadata", "typology", "handling", "sustainability", "characteristics", "commercial", "operation", "identification", "sources" ]
+}

@@ -1,0 +1,348 @@
+---
+openapi: 3.0.3
+info:
+  title: IoT Sensor Data
+  version: v1
+  x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#IotSensorData"
+servers:
+- url: catenax.io/api/v1
+  variables:
+    api-version:
+      default: v1
+paths:
+  /{tenant-id}/iot-sensor-data:
+    get:
+      tags:
+      - IotSensorData
+      operationId: getIotSensorData
+      parameters:
+      - name: tenant-id
+        in: path
+        description: The ID of the tenant owning the requested Twin.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: start
+        in: query
+        description: Starting index which is starting by 0
+        required: false
+        schema:
+          type: number
+      - name: count
+        in: query
+        description: Number of items to return per call.
+        required: false
+        schema:
+          type: number
+      - name: totalItemCount
+        in: query
+        description: Flag that indicates that the total counts should be returned.
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          $ref: "#/components/responses/IotSensorData"
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: "#/components/schemas/Error"
+    Error:
+      type: object
+      required:
+      - details
+      properties:
+        message:
+          type: string
+          minLength: 1
+        path:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          minLength: 1
+          additionalProperties:
+            type: object
+        code:
+          type: string
+          nullable: true
+    PagingSchema:
+      type: object
+      properties:
+        items:
+          type: array
+          $ref: "#/components/schemas/IotSensorData"
+        totalItems:
+          type: number
+        totalPages:
+          type: number
+        pageSize:
+          type: number
+        currentPage:
+          type: number
+    LatitudeCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#LatitudeCharacteristic"
+      description: Characteristic describing the property latitude.
+    LongitudeCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#LongitudeCharacteristic"
+      description: Characteristic describing the property longitude.
+    AltitudeCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#AltitudeCharacteristic"
+      description: Characteristic describing the property altitude.
+    Timestamp:
+      type: string
+      pattern: "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\\
+        .[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"
+      x-samm-aspect-model-urn: "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Timestamp"
+      description: Describes a Property which contains the date and time with an optional
+        timezone.
+    GeoDataCharacteristic:
+      description: Characteristic to describe the related Geo data.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#GeoDataCharacteristic"
+      type: object
+      properties:
+        latitude:
+          description: The angle between zenith and a plane parallel to the equator.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#latitude"
+          $ref: "#/components/schemas/LatitudeCharacteristic"
+        longitude:
+          description: Geographic coordinate that specifies the east-west position
+            of a point on the Earth's surface.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#longitude"
+          $ref: "#/components/schemas/LongitudeCharacteristic"
+        altitude:
+          description: Antenna Altitude above/below mean-sea-level (geoid).
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#altitude"
+          $ref: "#/components/schemas/AltitudeCharacteristic"
+        geoDataTimestamp:
+          description: The timestamp of the latest sensor reading of the geo data.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#geoDataTimestamp"
+          $ref: "#/components/schemas/Timestamp"
+    BatteryLevelCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#BatteryLevelCharacteristic"
+      description: Characteristic to describe the property battery level.
+    HumidityCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#HumidityCharacteristic"
+      description: Characteristic that describes the property humidity.
+    FillingLevelCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#FillingLevelCharacteristic"
+      description: Characteristic that describes the property filling level.
+    TemperatureCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#TemperatureCharacteristic"
+      description: Characteristic that describes the property temperature.
+    LightCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#LightCharacteristic"
+      description: Characteristic that describes the property light.
+    AccelerationCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#AccelerationCharacteristic"
+      description: Characteristic that describes the property acceleration.
+    WeightCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#WeightCharacteristic"
+      description: Characteristic that describes the property weight.
+    PressureCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#PressureCharacteristic"
+      description: Characteristic that describes the property pressure.
+    BinarySensorCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#BinarySensorCharacteristic"
+      description: Characteristic that describes the property binary sensor.
+      enum:
+      - 0
+      - 1
+    SoundSensorCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#SoundSensorCharacteristic"
+      description: Characteristic that describes the property sound sensor.
+    TransmissionMethodCharacteristic:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#TransmissionMethodCharacteristic"
+      description: Characteristic that describes the property transmission method.
+    AnalogSensorNumberCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#AnalogSensorNumberCharacteristic"
+      description: Characteristic of the analog sensor number property.
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+    AnalogSensorValueCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#AnalogSensorValueCharacteristic"
+      description: 'Characteristic describing the property analog sensor value. '
+    AnalogSensorEntity:
+      description: Encapsulates all analog sensor properties.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#AnalogSensorEntity"
+      type: object
+      properties:
+        analogSensorNumber:
+          description: Characteristic describing the number of Analog sensor.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#analogSensorNumber"
+          $ref: "#/components/schemas/AnalogSensorNumberCharacteristic"
+        analogSensorValue:
+          description: 'The value of the analog sensor. '
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#analogSensorValue"
+          $ref: "#/components/schemas/AnalogSensorValueCharacteristic"
+      required:
+      - analogSensorNumber
+      - analogSensorValue
+    AnalogSensorCharacteristic:
+      description: Characteristic that describes the property analog sensor.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#AnalogSensorCharacteristic"
+      type: array
+      items:
+        $ref: "#/components/schemas/AnalogSensorEntity"
+    CatenaXIdTrait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#CatenaXIdTrait"
+      description: "The provided regular expression ensures that the UUID is composed\
+        \ of five groups of characters separated by hyphens, in the form 8-4-4-4-12\
+        \ for a total of 36 characters (32 hexadecimal characters and 4 hyphens),\
+        \ optionally prefixed by \"urn:uuid:\" to make it an IRI."
+      pattern: "(^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)|(^urn:uuid:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)"
+    ErrorCodeCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#ErrorCodeCharacteristic"
+      description: A characteristic describing the property error code.
+    IotSensorData:
+      description: The data collected by an IoT Sensor Device.
+      type: object
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#IotSensorData"
+      properties:
+        geoData:
+          description: "Geodata, geographic data or geospatial data, refers to data\
+            \ and information that has explicit or implicit association with a location\
+            \ relative to Earth."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#geoData"
+          $ref: "#/components/schemas/GeoDataCharacteristic"
+        batteryLevel:
+          description: The battery level displays how much charge of the battery has
+            been left.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#batteryLevel"
+          $ref: "#/components/schemas/BatteryLevelCharacteristic"
+        humidity:
+          description: Describes the concentration of water vapor present in the air.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#humidity"
+          $ref: "#/components/schemas/HumidityCharacteristic"
+        fillingLevel:
+          description: Volume percentage of a liquid or solid filling material in
+            a container or vessel.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#fillingLevel"
+          $ref: "#/components/schemas/FillingLevelCharacteristic"
+        temperature:
+          description: Physical quantity that expresses quantitatively the perceptions
+            of hotness and coldness.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#temperature"
+          $ref: "#/components/schemas/TemperatureCharacteristic"
+        timestampSensoric:
+          description: The timestamp of the latest sensor reading.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#timestampSensoric"
+          $ref: "#/components/schemas/Timestamp"
+        light:
+          description: The measure of brightness of a light source in terms of energy
+            being emitted.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#light"
+          $ref: "#/components/schemas/LightCharacteristic"
+        acceleration:
+          description: The rate of change of the velocity of an object with respect
+            to time.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#acceleration"
+          $ref: "#/components/schemas/AccelerationCharacteristic"
+        weight:
+          description: Measured weight at timestamp.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#weight"
+          $ref: "#/components/schemas/WeightCharacteristic"
+        pressure:
+          description: Force applied over an area.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#pressure"
+          $ref: "#/components/schemas/PressureCharacteristic"
+        binarySensor:
+          description: Binary sensor monitors the state of condition of the parent
+            assets.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#binarySensor"
+          $ref: "#/components/schemas/BinarySensorCharacteristic"
+        soundSensor:
+          description: "Measured sound pressure level -  local pressure deviation\
+            \ from the ambient pressure, caused by a sound wave."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#soundSensor"
+          $ref: "#/components/schemas/SoundSensorCharacteristic"
+        transmissionMethod:
+          description: The method under which the sensing data is transmitted from
+            the source to the remote node.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#transmissionMethod"
+          $ref: "#/components/schemas/TransmissionMethodCharacteristic"
+        analogSensor:
+          description: Sensor that produce continuous analog output signal.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#analogSensor"
+          $ref: "#/components/schemas/AnalogSensorCharacteristic"
+        catenaXId:
+          description: "The fully anonymous Catena-X ID of the asset, valid for the\
+            \ Catena-X dataspace."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#catenaXId"
+          $ref: "#/components/schemas/CatenaXIdTrait"
+        errorCode:
+          description: A numeric code that is used to determine the nature of an error
+            and why it occured. The mapping is defined by the Asset Tracking Platform
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_data:1.0.0#errorCode"
+          $ref: "#/components/schemas/ErrorCodeCharacteristic"
+      required:
+      - timestampSensoric
+      - catenaXId
+  responses:
+    Unauthorized:
+      description: The requesting user or client is not authenticated.
+    Forbidden:
+      description: The requesting user or client is not authorized to access resources.
+    NotFoundError:
+      description: The requested resource has not been found.
+    ClientError:
+      description: Payload or user input is invalid. See error details in the payload
+        for more information.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    IotSensorData:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PagingSchema"
+      description: The request was successful.
+  requestBodies:
+    IotSensorData:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/IotSensorData"
+      required: true

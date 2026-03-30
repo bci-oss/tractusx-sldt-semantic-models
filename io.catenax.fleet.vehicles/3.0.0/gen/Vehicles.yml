@@ -1,0 +1,532 @@
+---
+openapi: 3.0.3
+info:
+  title: Vehicles
+  version: v3
+  x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#Vehicles"
+servers:
+- url: catenax.io/api/v3
+  variables:
+    api-version:
+      default: v3
+paths:
+  /{tenant-id}/vehicles:
+    get:
+      tags:
+      - Vehicles
+      operationId: getVehicles
+      parameters:
+      - name: tenant-id
+        in: path
+        description: The ID of the tenant owning the requested Twin.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: start
+        in: query
+        description: Starting index which is starting by 0
+        required: false
+        schema:
+          type: number
+      - name: count
+        in: query
+        description: Number of items to return per call.
+        required: false
+        schema:
+          type: number
+      - name: totalItemCount
+        in: query
+        description: Flag that indicates that the total counts should be returned.
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          $ref: "#/components/responses/Vehicles"
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: "#/components/schemas/Error"
+    Error:
+      type: object
+      required:
+      - details
+      properties:
+        message:
+          type: string
+          minLength: 1
+        path:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          minLength: 1
+          additionalProperties:
+            type: object
+        code:
+          type: string
+          nullable: true
+    PagingSchema:
+      type: object
+      properties:
+        items:
+          type: array
+          $ref: "#/components/schemas/Vehicles"
+        totalItems:
+          type: number
+        totalPages:
+          type: number
+        pageSize:
+          type: number
+        currentPage:
+          type: number
+    RecordStatusEnumeration:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#RecordStatusEnumeration"
+      description: Defining the enumeration for the record status
+      enum:
+      - new
+      - update
+      - delete
+      - same
+    UniqueID:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#UniqueID"
+      description: This Characteristic describes a property that is truly unique either
+        inside the Company that is providing the data or even in Catena-X dataspace.
+        Only one property in a semantic entity should be a uniqueID. Unique ids can
+        be used to link a data set with other semantic models.
+    UuidV4Trait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.uuid:2.0.0#UuidV4Trait"
+      description: "The provided regular expression ensures that the UUID is composed\
+        \ of five groups of characters separated by hyphens, in the form 8-4-4-4-12\
+        \ for a total of 36 characters (32 hexadecimal characters and 4 hyphens),\
+        \ optionally prefixed by \"urn:uuid:\" to make it an IRI."
+      pattern: "(^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)|(^urn:uuid:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)"
+    Text:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Text"
+      description: "Describes a Property which contains plain text. This is intended\
+        \ exclusively for human readable strings, not for identifiers, measurement\
+        \ values, etc."
+    EnginePower:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#EnginePower"
+      description: Engine power expressed in kilowatt.
+    DriveTypeNHTSA:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#DriveTypeNHTSA"
+      description: "Enumeration of drive type according NHTSA, table [vPICList_lite].[dbo].[DriveType]"
+      enum:
+      - All-Wheel Drive
+      - Front-Wheel Drive
+      - Rear-Wheel Drive
+    PowerTrainTypes:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#PowerTrainTypes"
+      description: "This enumeration comes from NHTSA (US authority) database. Table\
+        \ [vPICList_lite].[dbo].[ElectrificationLevel] extended by Gasoline and Diesel\
+        \ as entry."
+      enum:
+      - BEV (Battery Electric Vehicle)
+      - Diesel
+      - FCEV (Fuel Cell Electric Vehicle)
+      - Gasoline
+      - HEV (Hybrid Electric Vehicle)
+      - Mild HEV (Hybrid Electric Vehicle)
+      - PHEV (Plug-in Hybrid Electric Vehicle)
+      - Other
+    BpnsTrait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.business_partner_number:2.0.0#BpnsTrait"
+      description: "The provided regular expression ensures that the BPNS is composed\
+        \ of prefix 'BPNS', 10 digits and two alphanumeric letters."
+      pattern: "^BPNS[a-zA-Z0-9]{12}$"
+    CountryCodeTrait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#CountryCodeTrait"
+      description: 'Regular Expression that ensures a three-letter code '
+      pattern: "^[A-Z][A-Z][A-Z]$"
+    Timestamp:
+      type: string
+      pattern: "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\\
+        .[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"
+      x-samm-aspect-model-urn: "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Timestamp"
+      description: Describes a Property which contains the date and time with an optional
+        timezone.
+    VehicleSteeringPos:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#VehicleSteeringPos"
+      description: "Vehicle steering position enumeration from NHTSA, see table [vPICList_lite].[dbo].[Steering]"
+      enum:
+      - Left-Hand Drive
+      - Right-Hand Drive
+    OemShortNameTrait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#OemShortNameTrait"
+      description: Restricts the length of wmiCode to exactly 3 chars.
+      maxLength: 3
+      minLength: 3
+    CubicCapacity:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#CubicCapacity"
+      description: Cubic capacity of the engine
+    FuelTypesNHTSA:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#FuelTypesNHTSA"
+      description: "Enumeration from NHTSA vpic database, table [vPICList_lite].[dbo].[FuelType]"
+      enum:
+      - Compressed Hydrogen/Hydrogen
+      - Compressed Natural Gas(CNG)
+      - Diesel
+      - Electric
+      - Ethanol(E85)
+      - Flexible Fuel Vehicle(FFV)
+      - Fuel Cell
+      - Gasoline
+      - Liquefied Natural Gas(LNG)
+      - Liquefied Petroleum Gas(propane or LPG)
+      - Methanol(M85)
+      - Natural Gas
+      - Neat Ethanol(E100)
+      - Neat Methanol(M100)
+      - Unknown
+    Engine:
+      description: Describing one installed engine
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#Engine"
+      type: object
+      properties:
+        engineId:
+          description: OEM-specific identifier/type of the installed engine
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#engineId"
+          $ref: "#/components/schemas/UniqueID"
+        engineDescription:
+          description: Description of the engine
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#engineDescription"
+          $ref: "#/components/schemas/Text"
+        engineSeries:
+          description: Engine series as defined by OEM
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#engineSeries"
+          $ref: "#/components/schemas/Text"
+        serialNumber:
+          description: Serial number of the part.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#serialNumber"
+          $ref: "#/components/schemas/UniqueID"
+        size:
+          description: Cubic capacity in a combustion engine  - not available in battery-electric
+            vehicles
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#size"
+          $ref: "#/components/schemas/CubicCapacity"
+        power:
+          description: Engine power is the power that an engine can put out
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#power"
+          $ref: "#/components/schemas/EnginePower"
+        engineProductionDate:
+          description: Date when the engine was produced
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#engineProductionDate"
+          $ref: "#/components/schemas/Timestamp"
+        installDate:
+          description: Date when the engine was installed
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#installDate"
+          $ref: "#/components/schemas/Timestamp"
+        nhtsaFuelType:
+          description: Description of the fuel according US NHTSA
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#nhtsaFuelType"
+          $ref: "#/components/schemas/FuelTypesNHTSA"
+    EnginesList:
+      description: A list of all installed engines in the vehicle
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#EnginesList"
+      type: array
+      items:
+        $ref: "#/components/schemas/Engine"
+    Equipment:
+      description: One equipment of the vehicle.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#Equipment"
+      type: object
+      properties:
+        equipmentIdentifier:
+          description: The identifier of a specific equipment.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#equipmentIdentifier"
+          $ref: "#/components/schemas/UniqueID"
+        equipmentDescription:
+          description: The equipment variants description.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#equipmentDescription"
+          $ref: "#/components/schemas/Text"
+        group:
+          description: Bundles all equipment-oriented information into categories
+            like Interior
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#group"
+          $ref: "#/components/schemas/Text"
+    EquipmentsList:
+      description: List of equipments installed in the vehicle.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#EquipmentsList"
+      type: array
+      items:
+        $ref: "#/components/schemas/Equipment"
+    Component:
+      description: One component in the car
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#Component"
+      type: object
+      properties:
+        catenaXPartId:
+          description: The fully anonymous and unique Catena-X ID of this part. This
+            id is unique inside Catena-X data space.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#catenaXPartId"
+          $ref: "#/components/schemas/UuidV4Trait"
+        componentName:
+          description: Name of this component.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#componentName"
+          $ref: "#/components/schemas/Text"
+        partNumber:
+          description: Internal part number of the part. A part number is NOT unique.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#partNumber"
+          $ref: "#/components/schemas/Text"
+        manufacturerSerialNumber:
+          description: "Serial number given from the manufacturer or supplier of this\
+            \ part, component, sub component. A manufacturer serial number is unique:\
+            \ With the serial number the produced part can be traced within the manufacturer."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#manufacturerSerialNumber"
+          $ref: "#/components/schemas/UniqueID"
+        manufacturerPartNumber:
+          description: "Part number given from  the manufacturer or supplier of this\
+            \ part, component, sub component or raw material. A manufacturer part\
+            \ number is NOT unique: All parts of the same kind share the same part\
+            \ number."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#manufacturerPartNumber"
+          $ref: "#/components/schemas/Text"
+        serialNumber:
+          description: Serial number of the part.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#serialNumber"
+          $ref: "#/components/schemas/UniqueID"
+    ComponentsList:
+      description: List of built in components
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#ComponentsList"
+      type: array
+      items:
+        $ref: "#/components/schemas/Component"
+    Vehicle:
+      description: Vehicle data that does not fit into one of the other entities.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#Vehicle"
+      type: object
+      properties:
+        recordStatus:
+          description: |-
+            The record operation enumeration can be used to realize delta update concept.
+            Delta update concept means:
+            - You transfer an initial load of data
+            - After the first week only the delta to the initial load is transferred
+
+
+            The record status describes whether this record is:
+            - new=>This record is transferred the first time
+            - update=> Some properties of this record have changed compared to a previous transfer
+            - delete=> This record was transferred in the initial load or in a previous delta update, but is not used any more and therefore it should be deleted on data consumer side
+            - same=> This record was transferred in the initial load or in a previous delta update
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#recordStatus"
+          $ref: "#/components/schemas/RecordStatusEnumeration"
+        anonymizedVin:
+          description: OEM-specific hashed VIN. Necessary to link current data set
+            with other data sets.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#anonymizedVin"
+          $ref: "#/components/schemas/UniqueID"
+        catenaXVehicleId:
+          description: A unique identifier for the vehicle in the Catena-X data space.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#catenaXVehicleId"
+          $ref: "#/components/schemas/UuidV4Trait"
+        class:
+          description: Class of the vehicle.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#class"
+          $ref: "#/components/schemas/Text"
+        driveSystemPower:
+          description: Complete power of this vehicle in KW. This sums up the power
+            of each individual engine installed in this vehicle.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#driveSystemPower"
+          $ref: "#/components/schemas/EnginePower"
+        driveType:
+          description: Drive type of a vehicle according enumeration.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#driveType"
+          $ref: "#/components/schemas/DriveTypeNHTSA"
+        powerTrainType:
+          description: Describes the installed powertrain in the vehicle.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#powerTrainType"
+          $ref: "#/components/schemas/PowerTrainTypes"
+        modelDescription:
+          description: Detail vehicle model like "Golf VIII"
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#modelDescription"
+          $ref: "#/components/schemas/Text"
+        modelIdentifier:
+          description: OEM-specific model identifier or OEM-specific project name.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#modelIdentifier"
+          $ref: "#/components/schemas/Text"
+        plantCatenaXId:
+          description: "Unique Catena-X plant identifier, also called BPNS."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#plantCatenaXId"
+          $ref: "#/components/schemas/BpnsTrait"
+        plantCountryCode:
+          description: "Country code of the plant, where the vehicle was produced."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#plantCountryCode"
+          $ref: "#/components/schemas/CountryCodeTrait"
+        plantDescription:
+          description: Long name of the production plant of the vehicle
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#plantDescription"
+          $ref: "#/components/schemas/Text"
+        plantIdentifier:
+          description: Plant id of the final assembly of the vehicle
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#plantIdentifier"
+          $ref: "#/components/schemas/UniqueID"
+        productionDate:
+          description: Production date of the vehicle
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#productionDate"
+          $ref: "#/components/schemas/Timestamp"
+        softwareCategory:
+          description: |-
+            Some OEMs bring in the software as complete package for all systems:
+            To identify this software: software category and software version is needed.
+            Software category when this car was built.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#softwareCategory"
+          $ref: "#/components/schemas/Text"
+        softwareVersion:
+          description: |-
+            Some OEMs brings in the software as complete package for all systems:
+            To identify this software: software category and software version is needed.
+            Software version when this car was built
+            .
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#softwareVersion"
+          $ref: "#/components/schemas/Text"
+        soldCountryCode:
+          description: The country code in 3 letter format where this vehicle was
+            sold.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#soldCountryCode"
+          $ref: "#/components/schemas/CountryCodeTrait"
+        soldCountryGroup:
+          description: The region where this car was sold.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#soldCountryGroup"
+          $ref: "#/components/schemas/Text"
+        soldDate:
+          description: Sold date of the vehicle = warranty start date for this vehicle
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#soldDate"
+          $ref: "#/components/schemas/Timestamp"
+        steeringPos:
+          description: "Position of vehicle steering wheel, Left or right."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#steeringPos"
+          $ref: "#/components/schemas/VehicleSteeringPos"
+        vehicleSeries:
+          description: "vehicle series, normally one level above model. E.g. vehicle\
+            \ series =\"Golf\", vehicle model=\"Golf VIII\""
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#vehicleSeries"
+          $ref: "#/components/schemas/Text"
+        wmiCode:
+          description: The world manufacturer index are the first 3 letters of the
+            VIN. IT describes a code for the vehicle manufacturer. Also see the description
+            from NTHSA.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#wmiCode"
+          $ref: "#/components/schemas/OemShortNameTrait"
+        wmiNameNHTSA:
+          description: "Name of the vehicle manufacturer according NHTSA: use https://vpic.nhtsa.dot.gov/api/vehicles/decodewmi/WVW?format=json\
+            \ - entry to be used is CommonName."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#wmiNameNHTSA"
+          $ref: "#/components/schemas/Text"
+        engines:
+          description: List of installed engines in the vehicle.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#engines"
+          $ref: "#/components/schemas/EnginesList"
+        equipments:
+          description: Equipments.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#equipments"
+          $ref: "#/components/schemas/EquipmentsList"
+        components:
+          description: Focus components that should be analysed during the qualityTask.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#components"
+          $ref: "#/components/schemas/ComponentsList"
+      required:
+      - anonymizedVin
+    VehiclesList:
+      description: List of vehicles
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#VehiclesList"
+      type: array
+      items:
+        $ref: "#/components/schemas/Vehicle"
+    MetaCharacteristic:
+      description: Characteristic for the meta information.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#MetaCharacteristic"
+      type: object
+      properties:
+        selectionCriteria:
+          description: Describes the selection criteria a Catena-X data provider has
+            applied to create this data set.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#selectionCriteria"
+          $ref: "#/components/schemas/Text"
+        selectionStart:
+          description: Describes the starting point for providing records in this
+            data set.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#selectionStart"
+          $ref: "#/components/schemas/Text"
+        selectionEnd:
+          description: Describes the end point for providing records in this data
+            set.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#selectionEnd"
+          $ref: "#/components/schemas/Text"
+      required:
+      - selectionCriteria
+    Vehicles:
+      description: "This aspect model was created in the Catena-X use case quality.\
+        \ The purpose of this aspect model is to transfer general information of a\
+        \ list/fleet of vehicles - primarily how the vehicles are equipped, when they\
+        \ were built and which engines are installed."
+      type: object
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#Vehicles"
+      properties:
+        vehicles:
+          description: A list of vehicles.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#vehicles"
+          $ref: "#/components/schemas/VehiclesList"
+        metaInformation:
+          description: 'This meta information is valid for all entries in this data
+            set. The meta information is used to tell the data consumer which selection
+            criteria were applied by the data provider. '
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.fleet.vehicles:3.0.0#metaInformation"
+          $ref: "#/components/schemas/MetaCharacteristic"
+      required:
+      - vehicles
+  responses:
+    Unauthorized:
+      description: The requesting user or client is not authenticated.
+    Forbidden:
+      description: The requesting user or client is not authorized to access resources.
+    NotFoundError:
+      description: The requested resource has not been found.
+    ClientError:
+      description: Payload or user input is invalid. See error details in the payload
+        for more information.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Vehicles:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PagingSchema"
+      description: The request was successful.
+  requestBodies:
+    Vehicles:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vehicles"
+      required: true

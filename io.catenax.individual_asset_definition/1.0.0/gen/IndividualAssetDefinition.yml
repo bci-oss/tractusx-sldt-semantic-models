@@ -1,0 +1,176 @@
+---
+openapi: 3.0.3
+info:
+  title: Individual Asset Definition
+  version: v1
+  x-samm-aspect-model-urn: "urn:samm:io.catenax.individual_asset_definition:1.0.0#IndividualAssetDefinition"
+servers:
+- url: catenax.io/api/v1
+  variables:
+    api-version:
+      default: v1
+paths:
+  /{tenant-id}/individual-asset-definition:
+    get:
+      tags:
+      - IndividualAssetDefinition
+      operationId: getIndividualAssetDefinition
+      parameters:
+      - name: tenant-id
+        in: path
+        description: The ID of the tenant owning the requested Twin.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          $ref: "#/components/responses/IndividualAssetDefinition"
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: "#/components/schemas/Error"
+    Error:
+      type: object
+      required:
+      - details
+      properties:
+        message:
+          type: string
+          minLength: 1
+        path:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          minLength: 1
+          additionalProperties:
+            type: object
+        code:
+          type: string
+          nullable: true
+    CatenaXIdTrait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.individual_asset_definition:1.0.0#CatenaXIdTrait"
+      description: "The provided regular expression ensures that the UUID is composed\
+        \ of five groups of characters separated by hyphens, in the form 8-4-4-4-12\
+        \ for a total of 36 characters (32 hexadecimal characters and 4 hyphens),\
+        \ optionally prefixed by \"urn:uuid:\" to make it an IRI."
+      pattern: "(^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)|(^urn:uuid:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)"
+    AssetOwnerCharacteristic:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.individual_asset_definition:1.0.0#AssetOwnerCharacteristic"
+      description: Characteristic describing the property asset owner.
+    AssetSerialNumberCharacteristic:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.individual_asset_definition:1.0.0#AssetSerialNumberCharacteristic"
+      description: Characteristic describing the property serial number.
+    AssetTypeCharacteristic:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.individual_asset_definition:1.0.0#AssetTypeCharacteristic"
+      description: Characteristic describing the property asset type.
+    KilogramCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.physical_dimension:2.0.0#KilogramCharacteristic"
+      description: a measurement value given in the unit kilogram
+    MillimetreCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.physical_dimension:2.0.0#MillimetreCharacteristic"
+      description: a measurement for a lenght given in the unit millimetre
+    PhysicalDimensionsCharacteristic:
+      description: Describes the physical dimensions of then entity.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.physical_dimension:2.0.0#PhysicalDimensionsCharacteristic"
+      type: object
+      properties:
+        weight:
+          description: Weight of the item
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.physical_dimension:2.0.0#weight"
+          $ref: "#/components/schemas/KilogramCharacteristic"
+        diameter:
+          description: Diameter of the item.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.physical_dimension:2.0.0#diameter"
+          $ref: "#/components/schemas/MillimetreCharacteristic"
+        height:
+          description: Height of the item.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.physical_dimension:2.0.0#height"
+          $ref: "#/components/schemas/MillimetreCharacteristic"
+        width:
+          description: Width of the item.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.physical_dimension:2.0.0#width"
+          $ref: "#/components/schemas/MillimetreCharacteristic"
+        length:
+          description: Length of the item.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.physical_dimension:2.0.0#length"
+          $ref: "#/components/schemas/MillimetreCharacteristic"
+    IndividualAssetDefinition:
+      description: Permanent characteristics of an individual asset.
+      type: object
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.individual_asset_definition:1.0.0#IndividualAssetDefinition"
+      properties:
+        catenaXId:
+          description: "The fully anonymous Catena-X ID of the asset, valid for the\
+            \ Catena-X dataspace."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.individual_asset_definition:1.0.0#catenaXId"
+          $ref: "#/components/schemas/CatenaXIdTrait"
+        assetOwnerId:
+          description: BPNL of the asset owner.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.individual_asset_definition:1.0.0#assetOwnerId"
+          $ref: "#/components/schemas/AssetOwnerCharacteristic"
+        assetSerialNumber:
+          description: The serial number of the asset.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.individual_asset_definition:1.0.0#assetSerialNumber"
+          $ref: "#/components/schemas/AssetSerialNumberCharacteristic"
+        assetType:
+          description: The type of an asset.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.individual_asset_definition:1.0.0#assetType"
+          $ref: "#/components/schemas/AssetTypeCharacteristic"
+        physicalDimensionsProperty:
+          description: Describes the physical dimensions of then entity.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.individual_asset_definition:1.0.0#physicalDimensionsProperty"
+          $ref: "#/components/schemas/PhysicalDimensionsCharacteristic"
+      required:
+      - catenaXId
+      - assetOwnerId
+      - assetSerialNumber
+      - assetType
+      - physicalDimensionsProperty
+  responses:
+    Unauthorized:
+      description: The requesting user or client is not authenticated.
+    Forbidden:
+      description: The requesting user or client is not authorized to access resources.
+    NotFoundError:
+      description: The requested resource has not been found.
+    ClientError:
+      description: Payload or user input is invalid. See error details in the payload
+        for more information.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    IndividualAssetDefinition:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/IndividualAssetDefinition"
+      description: The request was successful.
+  requestBodies:
+    IndividualAssetDefinition:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/IndividualAssetDefinition"
+      required: true

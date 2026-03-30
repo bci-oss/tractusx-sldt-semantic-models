@@ -1,0 +1,150 @@
+---
+openapi: 3.0.3
+info:
+  title: IoT Sensor Device Definition
+  version: v2
+  x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_device_definition:2.0.0#IotSensorDeviceDefinition"
+servers:
+- url: catenax.io/api/v2
+  variables:
+    api-version:
+      default: v2
+paths:
+  /{tenant-id}/iot-sensor-device-definition:
+    get:
+      tags:
+      - IotSensorDeviceDefinition
+      operationId: getIotSensorDeviceDefinition
+      parameters:
+      - name: tenant-id
+        in: path
+        description: The ID of the tenant owning the requested Twin.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          $ref: "#/components/responses/IotSensorDeviceDefinition"
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: "#/components/schemas/Error"
+    Error:
+      type: object
+      required:
+      - details
+      properties:
+        message:
+          type: string
+          minLength: 1
+        path:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          minLength: 1
+          additionalProperties:
+            type: object
+        code:
+          type: string
+          nullable: true
+    UuidV4Trait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.uuid:1.0.0#UuidV4Trait"
+      description: "The provided regular expression ensures that the UUID is composed\
+        \ of five groups of characters separated by hyphens, in the form 8-4-4-4-12\
+        \ for a total of 36 characters (32 hexadecimal characters and 4 hyphens),\
+        \ optionally prefixed by \"urn:uuid:\" to make it an IRI."
+      pattern: "(^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)|(^urn:uuid:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)"
+    ManufacturerCharacteristic:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_device_definition:2.0.0#ManufacturerCharacteristic"
+      description: Characteristic describing the property manufacturer.
+    TypeCharacteristic:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_device_definition:2.0.0#TypeCharacteristic"
+      description: Describes the characteristics of the given type of device.
+    SerialNumberCharacteristic:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_device_definition:2.0.0#SerialNumberCharacteristic"
+      description: Describes the characteristic of the property serial number.
+    BpnlTrait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.shared.business_partner_number:1.0.0#BpnlTrait"
+      description: "The provided regular expression ensures that the BPNL is composed\
+        \ of prefix 'BPNL', 10 digits and two uppercase letters."
+      pattern: "^BPNL[0-9]{8}[a-zA-Z0-9]{4}$"
+    IotSensorDeviceDefinition:
+      description: Permanent characteristics of the individual IoT sensor device.
+      type: object
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_device_definition:2.0.0#IotSensorDeviceDefinition"
+      properties:
+        catenaXId:
+          description: "The fully anonymous Catena-X ID of the serialized part, valid\
+            \ for the Catena-X dataspace."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_device_definition:2.0.0#catenaXId"
+          $ref: "#/components/schemas/UuidV4Trait"
+        manufacturer:
+          description: Manufacturer of the IoT sensor device.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_device_definition:2.0.0#manufacturer"
+          $ref: "#/components/schemas/ManufacturerCharacteristic"
+        type:
+          description: The type of the IoT sensor device.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_device_definition:2.0.0#type"
+          $ref: "#/components/schemas/TypeCharacteristic"
+        serialNumber:
+          description: "The serial number of the IoT sensor device, as assigned by\
+            \ the manufacturer of the device."
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_device_definition:2.0.0#serialNumber"
+          $ref: "#/components/schemas/SerialNumberCharacteristic"
+        ownerID:
+          description: The Catena-X BPNL of the device owner.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.iot_sensor_device_definition:2.0.0#ownerID"
+          $ref: "#/components/schemas/BpnlTrait"
+      required:
+      - catenaXId
+      - manufacturer
+      - type
+      - serialNumber
+      - ownerID
+  responses:
+    Unauthorized:
+      description: The requesting user or client is not authenticated.
+    Forbidden:
+      description: The requesting user or client is not authorized to access resources.
+    NotFoundError:
+      description: The requested resource has not been found.
+    ClientError:
+      description: Payload or user input is invalid. See error details in the payload
+        for more information.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    IotSensorDeviceDefinition:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/IotSensorDeviceDefinition"
+      description: The request was successful.
+  requestBodies:
+    IotSensorDeviceDefinition:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/IotSensorDeviceDefinition"
+      required: true

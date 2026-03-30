@@ -1,0 +1,386 @@
+---
+openapi: 3.0.3
+info:
+  title: Failure Pattern
+  version: v1
+  x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#FailurePattern"
+servers:
+- url: catenax.io/api/v1
+  variables:
+    api-version:
+      default: v1
+paths:
+  /{tenant-id}/failure-pattern:
+    get:
+      tags:
+      - FailurePattern
+      operationId: getFailurePattern
+      parameters:
+      - name: tenant-id
+        in: path
+        description: The ID of the tenant owning the requested Twin.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: start
+        in: query
+        description: Starting index which is starting by 0
+        required: false
+        schema:
+          type: number
+      - name: count
+        in: query
+        description: Number of items to return per call.
+        required: false
+        schema:
+          type: number
+      - name: totalItemCount
+        in: query
+        description: Flag that indicates that the total counts should be returned.
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          $ref: "#/components/responses/FailurePattern"
+        "400":
+          $ref: "#/components/responses/ClientError"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          $ref: "#/components/schemas/Error"
+    Error:
+      type: object
+      required:
+      - details
+      properties:
+        message:
+          type: string
+          minLength: 1
+        path:
+          type: string
+          minLength: 1
+        details:
+          type: object
+          minLength: 1
+          additionalProperties:
+            type: object
+        code:
+          type: string
+          nullable: true
+    PagingSchema:
+      type: object
+      properties:
+        items:
+          type: array
+          $ref: "#/components/schemas/FailurePattern"
+        totalItems:
+          type: number
+        totalPages:
+          type: number
+        pageSize:
+          type: number
+        currentPage:
+          type: number
+    Text:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Text"
+      description: "Describes a Property which contains plain text. This is intended\
+        \ exclusively for human readable strings, not for identifiers, measurement\
+        \ values, etc."
+    StringInsideOperatorEnumeration:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#StringInsideOperatorEnumeration"
+      description: Provides a selection of several logical operators for string expressions
+      enum:
+      - equal
+      - not_equal
+      - like
+    QAXNamespaces:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#QAXNamespaces"
+      description: A list to all existing qax namespaces.
+      enum:
+      - io.catenax.fleet.claim_data
+      - io.catenax.fleet.diagnostic_data
+      - io.catenax.fleet.vehicles
+      - io.catenax.manufactured_parts_quality_information
+      - io.catenax.parts_analyses
+      - io.catenax.quality_task
+    ModelVersionTrait:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#ModelVersionTrait"
+      description: "This regular expression ensures that the version is [1-9].[0-9].[0.9]"
+      pattern: "^[1-9].[0-9].[0-9]$"
+    LinkToAspectModel:
+      description: This characteristic groups all necessary properties to refer to
+        an existing Catena-X aspect model.
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#LinkToAspectModel"
+      type: object
+      properties:
+        nameSpace:
+          description: Name space of the model
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#nameSpace"
+          $ref: "#/components/schemas/QAXNamespaces"
+        ttlFile:
+          description: A defined ttl file
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#ttlFile"
+          $ref: "#/components/schemas/Text"
+        modelVersion:
+          description: Version of aspect model.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#modelVersion"
+          $ref: "#/components/schemas/ModelVersionTrait"
+      required:
+      - nameSpace
+      - ttlFile
+      - modelVersion
+    StringExpressionCharacteristic:
+      description: Characteristic to describe string expressions
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#StringExpressionCharacteristic"
+      type: object
+      properties:
+        stringPropertyName:
+          description: A property name of type string from the model.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#stringPropertyName"
+          $ref: "#/components/schemas/Text"
+        stringInsideOperator:
+          description: Describes the logical connector inside of a string expression
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#stringInsideOperator"
+          $ref: "#/components/schemas/StringInsideOperatorEnumeration"
+        stringValue:
+          description: The value that is used within the string expression and with
+            which it is to be compared
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#stringValue"
+          $ref: "#/components/schemas/Text"
+        referenceToAspectModel:
+          description: This property describes the underlying aspect model to which
+            this failure pattern definition should be applied to.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#referenceToAspectModel"
+          $ref: "#/components/schemas/LinkToAspectModel"
+      required:
+      - stringPropertyName
+      - stringInsideOperator
+      - stringValue
+      - referenceToAspectModel
+    BooleanInsideOperatorEnumerator:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#BooleanInsideOperatorEnumerator"
+      description: Provides a selection of several logical operators for boolean expressions
+      enum:
+      - equal
+      - not_equal
+    Boolean:
+      type: boolean
+      x-samm-aspect-model-urn: "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Boolean"
+      description: Represents a boolean value (i.e. a "flag").
+    BooleanExpressionCharacteristic:
+      description: Characteristic to describe boolean expressions
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#BooleanExpressionCharacteristic"
+      type: object
+      properties:
+        booleanPropertyName:
+          description: A property name of type boolean from the model.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#booleanPropertyName"
+          $ref: "#/components/schemas/Text"
+        booleanInsideOperator:
+          description: Describes the logical connector inside of a boolean expression
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#booleanInsideOperator"
+          $ref: "#/components/schemas/BooleanInsideOperatorEnumerator"
+        booleanValue:
+          description: The value that is used within the boolean expression and with
+            which it is to be compared
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#booleanValue"
+          $ref: "#/components/schemas/Boolean"
+        referenceToAspectModel:
+          description: This property describes the underlying aspect model to which
+            this failure pattern definition should be applied to.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#referenceToAspectModel"
+          $ref: "#/components/schemas/LinkToAspectModel"
+      required:
+      - booleanPropertyName
+      - booleanInsideOperator
+      - booleanValue
+      - referenceToAspectModel
+    Expression:
+      description: This entity describes a single expression for an failure pattern
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#Expression"
+      type: object
+      properties:
+        stringExpression:
+          description: Describes an expression to compare string values
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#stringExpression"
+          $ref: "#/components/schemas/StringExpressionCharacteristic"
+        booleanExpression:
+          description: Describes an expression to compare boolean values
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#booleanExpression"
+          $ref: "#/components/schemas/BooleanExpressionCharacteristic"
+        subExpressionList:
+          description: A List of Expressions which is inside of an expression to be
+            able to describe complex expressions
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#subExpressionList"
+          $ref: "#/components/schemas/ListOfExpressions"
+        timestampExpression:
+          description: Describes an expression to compare timestamp values
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#timestampExpression"
+          $ref: "#/components/schemas/TimestampExpressionCharacteristic"
+        numericExpression:
+          description: Describes an expression to compare numeric values
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#numericExpression"
+          $ref: "#/components/schemas/NumericExpressionCharacteristic"
+        expressionConnector:
+          description: Describes how multiple expressions of a failure pattern are
+            connected to eachother
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#expressionConnector"
+          $ref: "#/components/schemas/ExpressionConnectorEnumeration"
+    ListOfExpressions:
+      description: A List containing multiple expressions to describe a failure patterns
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#ListOfExpressions"
+      type: array
+      items:
+        $ref: "#/components/schemas/Expression"
+    TimestampInsideOperatorEnumeration:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#TimestampInsideOperatorEnumeration"
+      description: Provides a selection of several logical operators for timestamp
+        expressions
+      enum:
+      - after
+      - before
+      - equal
+      - not_equal
+    Timestamp:
+      type: string
+      pattern: "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\\
+        .[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?"
+      x-samm-aspect-model-urn: "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Timestamp"
+      description: Describes a Property which contains the date and time with an optional
+        timezone.
+    TimestampExpressionCharacteristic:
+      description: Characteristic to describe timestamp expressions
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#TimestampExpressionCharacteristic"
+      type: object
+      properties:
+        timestampPropertyName:
+          description: A property name of type timestamp from the model.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#timestampPropertyName"
+          $ref: "#/components/schemas/Text"
+        timestampInsideOperator:
+          description: Describes the logical connector inside of a timestamp expression
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#timestampInsideOperator"
+          $ref: "#/components/schemas/TimestampInsideOperatorEnumeration"
+        timestampValue:
+          description: The value that is used within the timestamp expression and
+            with which it is to be compared
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#timestampValue"
+          $ref: "#/components/schemas/Timestamp"
+        referenceToAspectModel:
+          description: This property describes the underlying aspect model to which
+            this failure pattern definition should be applied to.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#referenceToAspectModel"
+          $ref: "#/components/schemas/LinkToAspectModel"
+      required:
+      - timestampPropertyName
+      - timestampInsideOperator
+      - timestampValue
+      - referenceToAspectModel
+    NumericInsideOperatorEnumeration:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#NumericInsideOperatorEnumeration"
+      description: Provides a selection of several logical operators for numeric expressions
+      enum:
+      - equal
+      - not_equal
+      - higher
+      - higher_equal
+      - lower
+      - lower_equal
+    NumericValueCharacteristic:
+      type: number
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#NumericValueCharacteristic"
+      description: The characteristic to describe numeric values as double
+    NumericExpressionCharacteristic:
+      description: Characteristic to describe numeric expressions
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#NumericExpressionCharacteristic"
+      type: object
+      properties:
+        numericPropertyName:
+          description: A property name of a numeric type from the model.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#numericPropertyName"
+          $ref: "#/components/schemas/Text"
+        numericInsideOperator:
+          description: Describes the logical connector inside of a numeric expression
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#numericInsideOperator"
+          $ref: "#/components/schemas/NumericInsideOperatorEnumeration"
+        numericValue:
+          description: The value that is used within the numeric expression and with
+            which it is to be compared
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#numericValue"
+          $ref: "#/components/schemas/NumericValueCharacteristic"
+        referenceToAspectModel:
+          description: This property describes the underlying aspect model to which
+            this failure pattern definition should be applied to.
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#referenceToAspectModel"
+          $ref: "#/components/schemas/LinkToAspectModel"
+      required:
+      - numericPropertyName
+      - numericInsideOperator
+      - numericValue
+      - referenceToAspectModel
+    ExpressionConnectorEnumeration:
+      type: string
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#ExpressionConnectorEnumeration"
+      description: Provides a selection of several connectors for the expressions
+      enum:
+      - AND
+      - OR
+      - XOR
+    FailurePattern:
+      description: Semantic model for a quality failure pattern.
+      type: object
+      x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#FailurePattern"
+      properties:
+        failurePatternDefinition:
+          description: The definition of a failure pattern
+          x-samm-aspect-model-urn: "urn:samm:io.catenax.failure_pattern:1.0.0#failurePatternDefinition"
+          $ref: "#/components/schemas/ListOfExpressions"
+      required:
+      - failurePatternDefinition
+  responses:
+    Unauthorized:
+      description: The requesting user or client is not authenticated.
+    Forbidden:
+      description: The requesting user or client is not authorized to access resources.
+    NotFoundError:
+      description: The requested resource has not been found.
+    ClientError:
+      description: Payload or user input is invalid. See error details in the payload
+        for more information.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    FailurePattern:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PagingSchema"
+      description: The request was successful.
+  requestBodies:
+    FailurePattern:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/FailurePattern"
+      required: true

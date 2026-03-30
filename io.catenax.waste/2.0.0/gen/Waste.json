@@ -1,0 +1,42 @@
+{
+  "identification" : {
+    "wasteCode" : "02 01 10",
+    "metalScrapIdentificationCode" : "02 01 10",
+    "wasteCodeJurisdiction" : "EU",
+    "wasteCodeDescription" : "metal waste"
+  },
+  "materialProperties" : {
+    "density" : 3,
+    "productComposition" : [ {
+      "materialName" : "Cobalt",
+      "materialWeightPercentage" : 3E+1
+    } ],
+    "productPurity" : {
+      "materialName" : "Cobalt",
+      "materialWeightPercentage" : 3E+1
+    }
+  },
+  "riskPotential" : {
+    "phValue" : 5.5,
+    "odor" : "Foul-smelling, sweetish",
+    "hazardousness" : true,
+    "contamination" : "Light oil contamination, Stark verschmutzt"
+  },
+  "formFactor" : "Aluminum sheets pressed, stacked, round, square",
+  "currentMarketPrice" : {
+    "marketIndexMaterialPrice" : {
+      "pricePerAreaInSquareMeter" : 1.25E+3,
+      "pricePerLengthInMeter" : 1.25E+3,
+      "pricePerWeightInKiloGram" : 1.25E+3,
+      "pricePerVolumeInMillilitre" : 3E+2,
+      "pricePerVolumeInLitre" : 1.25E+3,
+      "pricePerWeightInGram" : 3E+2,
+      "pricePerPiece" : 2.75E+3,
+      "pricePerAreaInSquareMillimeter" : 3E+2,
+      "pricePerLengthInMillimeter" : 3E+2
+    },
+    "marketIndexCurrency" : "EUR"
+  },
+  "wasteDisposalDate" : "2025-10-31",
+  "packagingType" : "Container, bins, drum, IBC"
+}
