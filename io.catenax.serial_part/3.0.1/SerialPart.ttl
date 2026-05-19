@@ -51,6 +51,7 @@
 
 :localIdentifiers a samm:Property;
    samm:preferredName "Local Identifiers"@en;
+   samm:see <https://rb-steady.bosch.tech/edg/tbl/prd_o_a02_core_ontology_v2.editor#prd-o-m-core-o:uniquePartID> ;
    samm:description "A local identifier enables identification of a part in a specific dataspace, but is not unique in Catena-X dataspace. Multiple local identifiers may exist."@en;
    samm:characteristic :LocalIdentifierCharacteristic.
 
@@ -115,24 +116,28 @@
 :country a samm:Property;
    samm:preferredName "Country code"@en;
    samm:description "Country code where the part was manufactured"@en;
+   samm:see <https://rb-steady.bosch.tech/edg/tbl/bosch_core_ontology_v1_2.editor#http://semantic.bosch.com/bosch-core-ontology-v1/CountryCode> ;
    samm:characteristic :ProductionCountryCodeTrait;
    samm:exampleValue "HUR".
 
 :manufacturerPartId a samm:Property;
    samm:preferredName "Manufacturer Part ID"@en;
    samm:description "Part ID as assigned by the manufacturer of the part. The Part ID identifies the part (as designed)in the manufacturer`s dataspace. The Part ID does not reference a specific instance of a part and thus should not be confused with the serial number."@en;
+   samm:see <https://rb-steady.bosch.tech/edg/tbl/prd_o_a02_core_ontology_v2.editor#prd-core-o:partNumber> ;
    samm:characteristic :PartIdCharacteristic;
    samm:exampleValue "123-0.740-3434-A".
 
 :customerPartId a samm:Property;
    samm:preferredName "Customer Part ID"@en;
    samm:description "Part ID as assigned by the manufacturer of the part. The Part ID identifies the part (as designed)in the customer`s dataspace. The Part ID does not reference a specific instance of a part and thus should not be confused with the serial number."@en;
+   samm:see <https://rb-steady.bosch.tech/edg/tbl/prd_o_a02_core_ontology_v2.editor#prd-o-m-core-o:customerPartNumber> ;
    samm:characteristic :PartIdCharacteristic;
    samm:exampleValue "PRT-12345".
 
 :nameAtManufacturer a samm:Property;
    samm:preferredName "Name at Manufacturer"@en;
    samm:description "Name of the part as assigned by the manufacturer"@en;
+   samm:see <https://rb-steady.bosch.tech/edg/tbl/prd_o_a02_core_ontology_v2.editor#prd-o-m-core-o:ProductAsRequired> ;
    samm:characteristic :PartNameCharacteristic;
    samm:exampleValue "Mirror left".
 
