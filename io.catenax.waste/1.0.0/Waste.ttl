@@ -202,7 +202,13 @@
 :DensityCharacteristic a bamm-c:Measurement;
     bamm:name "DensityCharacteristic";
     bamm:dataType xsd:double;
-    bamm-c:unit unit:kilogramPerCubicMetre.
+    bamm-c:unit :kilogramPerCubicMetre.
+:kilogramPerCubicMetre a bamm:Unit;
+    bamm:name "kilogramPerCubicMetre";
+    bamm:preferredName "kilogram per cubic metre"@en;
+    unit:quantityKind unit:density, unit:volumicMass, unit:concentrationOfB, unit:amountOfSubstance, unit:massDensity, unit:massConcentrationOfB;
+    bamm:symbol "kg/m³";
+    unit:commonCode "KMQ".
 :MarketIndexMaterialPriceCharacterisitic a bamm:Characteristic;
     bamm:name "MarketIndexMaterialPriceCharacterisitic";
     bamm:preferredName "market index material price"@en;
