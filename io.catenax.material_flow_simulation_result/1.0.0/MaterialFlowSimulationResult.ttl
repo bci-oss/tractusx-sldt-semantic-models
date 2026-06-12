@@ -43,7 +43,7 @@
     bamm:preferredName "Data Quality"@en;
     bamm:description "Information on quality of simulation results"@en;
     bamm:characteristic :DataQualityOptions;
-    bamm:exampleValue "0"^^xsd:positiveInteger.
+    bamm:exampleValue "1"^^xsd:positiveInteger.
 :comment a bamm:Property;
     bamm:preferredName "Comment"@en;
     bamm:description "Additional comments"@en;
@@ -75,8 +75,8 @@
 :DataQualityOptions a bamm-c:Enumeration;
     bamm:preferredName "Data Quality Options"@en;
     bamm:description "Possible values determining data quality"@en;
-    bamm:dataType xsd:positiveInteger;
-    bamm-c:values ("0"^^xsd:positiveInteger "1"^^xsd:positiveInteger "2"^^xsd:positiveInteger "3"^^xsd:positiveInteger "4"^^xsd:positiveInteger "5"^^xsd:positiveInteger).
+    bamm:dataType xsd:nonNegativeInteger;
+    bamm-c:values ("0"^^xsd:nonNegativeInteger "1"^^xsd:nonNegativeInteger "2"^^xsd:nonNegativeInteger "3"^^xsd:nonNegativeInteger "4"^^xsd:nonNegativeInteger "5"^^xsd:nonNegativeInteger).
 :Text a bamm:Characteristic;
     bamm:preferredName "Text"@en;
     bamm:description "Describes a Property which contains plain text. This is intended exclusively for human readable strings, not for identifiers, measurement values, etc."@en;
@@ -199,7 +199,7 @@
 :AmountCharacteristic a bamm-c:Quantifiable;
     bamm:preferredName "Amount Characteristic"@en;
     bamm:description "Number describing handling units with identical pieces"@en;
-    bamm:dataType xsd:positiveInteger;
+    bamm:dataType xsd:nonNegativeInteger;
     bamm-c:unit unit:piece.
 :BatchList a bamm-c:List;
     bamm:preferredName "Batch List"@en;

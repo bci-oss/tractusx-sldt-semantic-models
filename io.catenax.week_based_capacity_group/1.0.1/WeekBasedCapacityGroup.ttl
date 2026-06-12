@@ -193,28 +193,28 @@
 ]).
 :DemandCategoryDefault a :DemandCategoryType;
     :demandCategoryCode "0001";
-    :demandCategoryName "Default"^^rdf:langString.
+    :demandCategoryName "Default"@en.
 :DemandCategoryAfterSales a :DemandCategoryType;
     :demandCategoryCode "A1S1";
-    :demandCategoryName "After-Sales"^^rdf:langString.
+    :demandCategoryName "After-Sales"@en.
 :DemandCategorySeries a :DemandCategoryType;
     :demandCategoryCode "SR99";
-    :demandCategoryName "Series"^^rdf:langString.
+    :demandCategoryName "Series"@en.
 :DemandCategoryPhaseInPeriod a :DemandCategoryType;
     :demandCategoryCode "PI01";
-    :demandCategoryName "Phase-In Period"^^rdf:langString.
+    :demandCategoryName "Phase-In Period"@en.
 :DemandCategorySingleOrder a :DemandCategoryType;
     :demandCategoryCode "OS01";
-    :demandCategoryName "Single Order"^^rdf:langString.
+    :demandCategoryName "Single Order"@en.
 :DemandCategorySmallSeries a :DemandCategoryType;
     :demandCategoryCode "OI01";
-    :demandCategoryName "Small Series"^^rdf:langString.
+    :demandCategoryName "Small Series"@en.
 :DemandCategoryExtraordinaryDemand a :DemandCategoryType;
     :demandCategoryCode "ED01";
-    :demandCategoryName "Extraordinary Demand"^^rdf:langString.
+    :demandCategoryName "Extraordinary Demand"@en.
 :DemandCategoryPhaseOutPeriod a :DemandCategoryType;
     :demandCategoryCode "PO01";
-    :demandCategoryName "Phase-Out Period"^^rdf:langString.
+    :demandCategoryName "Phase-Out Period"@en.
 :demandCategoryCode a bamm:Property;
     bamm:preferredName "Demand Category Code"@en;
     bamm:description "The code identifying a demand category."@en;
@@ -224,7 +224,7 @@
     bamm:preferredName "Demand Category Name"@en;
     bamm:description "The name describing a demand category."@en;
     bamm:characteristic bamm-c:MultiLanguageText;
-    bamm:exampleValue "Default"^^rdf:langString.
+    bamm:exampleValue "Default"@en.
 :DemandCategoryCode a bamm-c:Code;
     bamm:preferredName "Demand Category Code"@en;
     bamm:description "The code identifying a demand category."@en;

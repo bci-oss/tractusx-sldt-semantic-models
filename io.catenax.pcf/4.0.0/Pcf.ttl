@@ -120,7 +120,7 @@
     bamm:description "Version of the product (carbon) footprint as specified in the Catena-X PCF Rulebook in accordance with the technical specifications for PCF Data Exchange (Version 2.0.0) from the WBCSD (World Business Council for Sustainable Development)/ PACT initiative. In Catena-X for example set to \"0\" per default."@en;
     bamm:see <https://wbcsd.github.io/tr/2023/data-exchange-protocol-20230221/>;
     bamm:characteristic :ProductFootprintVersion;
-    bamm:exampleValue "0"^^xsd:positiveInteger.
+    bamm:exampleValue "1"^^xsd:positiveInteger.
 :created a bamm:Property;
     bamm:preferredName "Creation of the Product (Carbon) Footprint"@en;
     bamm:description "Timestamp of the creation of the Product (Carbon) Footprint as specified in the Catena-X PCF Rulebook in accordance with the technical specifications for PCF Data Exchange (Version 2.0.0) from the WBCSD (World Business Council for Sustainable Development)/ PACT initiative."@en;

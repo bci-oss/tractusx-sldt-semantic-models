@@ -302,7 +302,7 @@
     bamm:description "Hex value of this DTC"@en;
     bamm:characteristic :FreezeFrameTrait;
     bamm:preferredName "Hex"@en;
-    bamm:exampleValue "4337499FF".
+    bamm:exampleValue "F".
 :fullName a bamm:Property;
     bamm:description "combined string of DTC name  plus the so called DTC sub type or DTC failure byte. Both string values are concatenated using a \"-\" as separator.\nDTC name is: B|C|P|U + 4 hex chars\nDTC failure byte: 2 hex chars\n\nIn some rare cases this could be just a hex string"@en;
     bamm:characteristic :FullNameTrait;
@@ -357,7 +357,7 @@
     bamm:description "freeze frame from ecu. The freeze frame records many parameters of the DTC and surrounding parameters like outside temperature when the DTC was set. It is a very long HEX string with many OEM-specific and ECU-specific content in"@en;
     bamm:characteristic :FreezeFrameTrait;
     bamm:preferredName "DTC freeze frame"@en;
-    bamm:exampleValue "100148340349340".
+    bamm:exampleValue "A".
 :conditionId a bamm:Property;
     bamm:description "OEM-specific: Primary key for this condition consists of unique identifier of env. condition and DTC"@en;
     bamm:characteristic bamm-c:Text;

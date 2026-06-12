@@ -68,7 +68,7 @@
     samm:preferredName "customer Identification"@en;
     samm:description "Internal customer Identification"@en;
     samm:characteristic ext-number:BpnlTrait;
-    samm:exampleValue "^BPNL[0-9]{8}[a-zA-Z0-9]{4}$".
+    samm:exampleValue "BPNL00000003CSGV".
 
 :ProcessStepIdentifierCharacteristic a samm-c:List;
     samm:preferredName "Process Step Identifier Characteristic"@en;
