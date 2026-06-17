@@ -539,10 +539,10 @@
     bamm:preferredName "Product Or Sector Specific Rules Entity"@en;
     bamm:description "Entity for defining the set of values for the product or sector specific rules of a product carbon footprint as specified by the WBCSD (World Business Council for Sustainable Development) Pathfinder initiative."@en;
     bamm:see <https://wbcsd.github.io/introduction/>.
-:Emission a unit:Unit;
+:Emission a bamm:Unit;
     bamm:name "Emission";
     bamm:preferredName "Emission"@en;
-    unit:symbol "kgCO2e/kg".
+    bamm:symbol "kgCO2e/kg".
 :landUseEmissions a bamm:Property;
     bamm:name "landUseEmissions";
     bamm:preferredName "Land Use Emissions"@en;

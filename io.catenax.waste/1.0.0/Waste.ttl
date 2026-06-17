@@ -170,7 +170,7 @@
     bamm:preferredName "Hazardousness"@en;
     bamm:description "If the product can be classified as hazardous"@en;
     bamm:characteristic bamm-c:Boolean;
-    bamm:exampleValue "yes / no"^^xsd:boolean.
+    bamm:exampleValue "true"^^xsd:boolean.
 :phValue a bamm:Property;
     bamm:name "phValue";
     bamm:preferredName "Ph-Value"@en;
@@ -203,6 +203,12 @@
     bamm:name "DensityCharacteristic";
     bamm:dataType xsd:double;
     bamm-c:unit :kilogramPerCubicMetre.
+:kilogramPerCubicMetre a bamm:Unit;
+    bamm:name "kilogramPerCubicMetre";
+    bamm:preferredName "kilogram per cubic metre"@en;
+    unit:quantityKind unit:density, unit:volumicMass, unit:concentrationOfB, unit:amountOfSubstance, unit:massDensity, unit:massConcentrationOfB;
+    bamm:symbol "kg/m³";
+    unit:commonCode "KMQ".
 :MarketIndexMaterialPriceCharacterisitic a bamm:Characteristic;
     bamm:name "MarketIndexMaterialPriceCharacterisitic";
     bamm:preferredName "market index material price"@en;
@@ -220,12 +226,7 @@
     bamm:properties (:materialName :materialWeightPercentage);
     bamm:preferredName "product composition"@en;
     bamm:description "Entity encapsulating the details of the product material properties (name and weight percentage) the waste consists of"@en.
-:kilogramPerCubicMetre a unit:Unit;
-    bamm:name "kilogramPerCubicMetre";
-    bamm:preferredName "kilogram per cubic metre"@en;
-    unit:quantityKind unit:density, unit:volumicMass, unit:concentrationOfB, unit:amountOfSubstance, unit:massDensity, unit:massConcentrationOfB;
-    unit:symbol "kg/m³";
-    unit:commonCode "KMQ".
+
 :MarketIndexMaterialPriceEntity a bamm:Entity;
     bamm:name "MarketIndexMaterialPriceEntity";
     bamm:properties ([

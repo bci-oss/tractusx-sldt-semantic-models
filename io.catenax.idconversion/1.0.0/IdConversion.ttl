@@ -61,14 +61,12 @@ bamm:characteristic :UrnCharacteristic .
 bamm:name "conversionInput";
 bamm:preferredName "Conversion Input"@en;
 bamm:description "The Conversion Input lists the (qualified) source identifiers or pseudonyms which should be covered by the Convert operation."@en;
-bamm:exampleValue "[{'key':'urn:standard:org.iso:9721#','value':'2HNYD28297H520948'},{'key':'urn:standard:org.iso:9721#','value':'1GCGG25V631131538'},{'key':'urn:standard:org.iso:9721#','value':'5FNRL38778B035407'}]";
 bamm:characteristic :QualifiedBatchOfIdentifiersEither .
 
 :conversionOutput a bamm:Property;
 bamm:name "conversionOutput";
 bamm:preferredName "Conversion Output"@en;
 bamm:description "The Conversion Output lists the (qualified) target identifiers or pseudonyms which have been computed by the Convert operation."@en;
-bamm:exampleValue "[{'key':'urn:VAN:com.bmw:1.0.0#','value':'670efca0-892c-4626-b870-d6d49799cdb0'},{'key':'urn:VAN:com.bmw:1.0.0#','value':'618bc46b-9f85-4de8-96ad-6da79390d766'},{'key':'urn:VAN:com.bmw:1.0.0#','value':'d42311ea-e461-48e5-bf85-31b1d8f45c03'}]";
 bamm:characteristic :QualifiedBatchOfIdentifiersEither .
 
 :QualifiedBatchOfIdentifiersEither a bamm-c:Either;

@@ -197,7 +197,7 @@
     bamm:preferredName "Post Code Value "@en;
     bamm:description "The value of a post code"@en;
     bamm:characteristic :PostCodeTrait;
-    bamm:exampleValue "68161\\12".
+    bamm:exampleValue "68161".
 :postCodeTechnicalKey a bamm:Property;
     bamm:name "postCodeTechnicalKey";
     bamm:preferredName "Post Code Technical Key"@en;

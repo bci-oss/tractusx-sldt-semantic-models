@@ -78,12 +78,12 @@
     bamm:preferredName "TechnicianComment"@en;
     bamm:description "short description of the claim from the technicians"@en;
     bamm:characteristic bamm-c:MultiLanguageText;
-    bamm:exampleValue "Lenkung ist defekt"^^rdf:langString.
+    bamm:exampleValue "Lenkung ist defekt"@de.
 :customerComment a bamm:Property;
     bamm:preferredName "CustomerComment"@en;
     bamm:description "short description of the claim from customer view"@en;
     bamm:characteristic bamm-c:MultiLanguageText;
-    bamm:exampleValue "Lenkung ist defekt"^^rdf:langString.
+    bamm:exampleValue "Lenkung ist defekt"@de.
 :claimId a bamm:Property;
     bamm:preferredName "ClaimID"@en;
     bamm:description "Claim ID: Unique for each OEM"@en;
@@ -136,7 +136,7 @@
     bamm:preferredName "vehicleCatenaXId"@en;
     bamm:description "Catena-X car ID /digital twin of car"@en;
     bamm:characteristic :CatenaXIdTrait;
-    bamm:exampleValue "580d3adf-1981-44a0-a214".
+    bamm:exampleValue "580d3adf-1981-44a0-a214-9b9a96e48716".
 :anonymizedVIN a bamm:Property;
     bamm:preferredName "Anonymized Vin"@en;
     bamm:description "OEM-specific hashed VIN; link to car data over pseydomized/hashed VIN or Catena-X unique digital twin identifier"@en;
@@ -146,12 +146,12 @@
     bamm:preferredName "IsPartReplaced"@en;
     bamm:description "flag is set if part was replaced\nTrue: replaced\nFalse: not replaced"@en;
     bamm:characteristic bamm-c:Boolean;
-    bamm:exampleValue "True"^^xsd:boolean.
+    bamm:exampleValue "true"^^xsd:boolean.
 :isPartCausal a bamm:Property;
     bamm:preferredName "IsPartCausal"@en;
     bamm:description "flag set to True if part was causing the problem\nTrue: part caused the problem\nFalse: part didn't cause the problem\n"@en;
     bamm:characteristic bamm-c:Boolean;
-    bamm:exampleValue "True"^^xsd:boolean.
+    bamm:exampleValue "true"^^xsd:boolean.
 :amountOfReplacedParts a bamm:Property;
     bamm:preferredName "AmountOfReplacedParts"@en;
     bamm:description "counter for non-serial parts which have been replaced"@en;

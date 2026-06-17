@@ -82,7 +82,8 @@
 :PayloadEntity a bamm:Entity;
     bamm:preferredName "Payload Entity"@en;
     bamm:properties (:units :variableNames :timeColumnName);
-    bamm:description "Contains the information about variable names and their units as well as the name of the time column."@en.
+    bamm:description "Contains the information about variable names and their units as well as the name of the time column."@en;
+    bamm:extends bamm-e:TimeSeriesEntity.
 :units a bamm:Property;
     bamm:preferredName "Units"@en;
     bamm:description "Lists the unit for each datapoint."@en;

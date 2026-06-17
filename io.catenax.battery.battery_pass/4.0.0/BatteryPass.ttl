@@ -197,8 +197,7 @@
 :materialSymbol a samm:Property ;
    samm:preferredName "Material Symbol"@en ;
    samm:description "A symbol representing lead and cadmium, if present in the battery. Possible entries are: Pb, Cd or Cd, Pb or Pb or Cd. This is mentioned in the Battery regulation 2023/1542 from 12 July 2023 in Article 13:\n5. All batteries containing more than 0,002 % cadmium or more than 0,004 % lead, shall be marked with the chemical symbol for the metal concerned: Cd or Pb."@en ;
-   samm:characteristic :MaterialSymbolEither ;
-   samm:exampleValue "Pb" .
+   samm:characteristic :MaterialSymbolEither .
 
 :hazardousSubstance a samm:Property ;
    samm:preferredName "Hazardous Substance"@en ;

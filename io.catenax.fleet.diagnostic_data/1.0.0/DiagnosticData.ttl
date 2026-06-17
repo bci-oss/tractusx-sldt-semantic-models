@@ -450,7 +450,7 @@
     bamm:dataType xsd:string.
 :HexRegex a bamm-c:RegularExpressionConstraint;
     bamm:description "a freeze frame contains only hex chars 0-9, A-F, a-f. Restricted to 8000 chars\n"@en;
-    bamm:value "^[0-9,A-F,a-f]$".
+    bamm:value "^[0-9A-Fa-f]+$".
 :FullNameTrait a bamm-c:Trait;
     bamm-c:baseCharacteristic :FullDTCCharacteristic;
     bamm-c:constraint :FullDTCRegEx.

@@ -94,7 +94,7 @@
    samm:preferredName "Trade Relation"@en ;
    samm:description "TradeRelation contains all underlying trade agreements"@en ;
    samm:characteristic :TradeRelationTrait ;
-   samm:exampleValue "EU-MX, EU-CA" .
+   samm:exampleValue "EU-MX" .
 
 :preferredStatus a samm:Property ;
    samm:preferredName "Preferred Status"@en ;

@@ -226,14 +226,12 @@
 :predecessor a samm:Property ;
    samm:preferredName "Predecessor"@en ;
    samm:description "Identification of the preceding product passport. This could either be an identification of the registered twin, a redirection to a platform where it is available, or if there is no preceding passport, input null."@en ;
-   samm:characteristic :IdentificationEither ;
-   samm:exampleValue "null" .
+   samm:characteristic :IdentificationEither .
 
 :passportIdentifier a samm:Property ;
    samm:preferredName "passportIdentifier"@en ;
    samm:description "The identifier of the product passport, which could be a uuidv4."@en ;
-   samm:characteristic :IdentificationEither ;
-   samm:exampleValue "urn:uuid:550e8400-e29b-41d4-a716-446655440000" .
+   samm:characteristic :IdentificationEither .
 
 :longName a samm:Property ;
    samm:preferredName "Long Name"@en ;
@@ -404,7 +402,7 @@
 :IdentificationEither a samm-c:Either ;
    samm:preferredName "Identification Either"@en ;
    samm:description "Either (left) a uuidv4 or (right) an other type of identifier."@en ;
-   samm-c:left ext-uuid:UuidV4Trait ;
+   samm-c:left ext-uuid:Uuidv4Characteristic ;
    samm-c:right :IdentifierCharacteristic .
 
 :ClassCharacteristic a samm:Characteristic ;
@@ -614,14 +612,14 @@
 :code a samm:Property ;
    samm:preferredName "Code"@en ;
    samm:description "The associated product category coded name/code, according to ECLASS. The 8-digit  code consists of two digits for each of the four hierarchical levels."@en ;
-   samm:see <https://eclass.eu/en/eclass-standard/search-content/show?tx_eclasssearch_ecsearch[discharge]=0&tx_eclasssearch_ecsearch[id]=44000000&tx_eclasssearch_ecsearch[language]=1&tx_eclasssearch_ecsearch[version]=13.0&cHash=10abd2696c4c5c526da4e3367e78c592> ;
+   samm:see <https://eclass.eu/en/eclass-standard/search-content/show?tx_eclasssearch_ecsearch%5Bdischarge%5D=0&tx_eclasssearch_ecsearch%5Bid%5D=44000000&tx_eclasssearch_ecsearch%5Blanguage%5D=1&tx_eclasssearch_ecsearch%5Bversion%5D=13.0&cHash=10abd2696c4c5c526da4e3367e78c592> ;
    samm:characteristic :CodeTrait ;
    samm:exampleValue "44-09-02-02" .
 
 :definition a samm:Property ;
    samm:preferredName "Definition"@en ;
    samm:description "The associated product category preferred name/definition according to ECLASS. This preferred name is always associated with the code."@en ;
-   samm:see <https://eclass.eu/en/eclass-standard/search-content/show?tx_eclasssearch_ecsearch[discharge]=0&tx_eclasssearch_ecsearch[id]=44000000&tx_eclasssearch_ecsearch[language]=1&tx_eclasssearch_ecsearch[version]=13.0&cHash=10abd2696c4c5c526da4e3367e78c592> ;
+   samm:see <https://eclass.eu/en/eclass-standard/search-content/show?tx_eclasssearch_ecsearch%5Bdischarge%5D=0&tx_eclasssearch_ecsearch%5Bid%5D=44000000&tx_eclasssearch_ecsearch%5Blanguage%5D=1&tx_eclasssearch_ecsearch%5Bversion%5D=13.0&cHash=10abd2696c4c5c526da4e3367e78c592> ;
    samm:characteristic samm-c:Text ;
    samm:exampleValue "Manual transmission (motor vehicle)" .
 
@@ -1118,8 +1116,7 @@
 :businessIdentifier a samm:Property ;
    samm:preferredName "Business Identifier"@en ;
    samm:description "The identifier used for a company address."@en ;
-   samm:characteristic :EitherIdentifier ;
-   samm:exampleValue "BPNL1234567890AA" .
+   samm:characteristic :EitherIdentifier .
 
 :businessIdentifierType a samm:Property ;
    samm:preferredName "Business Identifier Type"@en ;
@@ -1165,8 +1162,7 @@
 :locationIdentifier a samm:Property ;
    samm:preferredName "Location Identifier"@en ;
    samm:description "The identifier used for a location."@en ;
-   samm:characteristic :EitherLocationIdentifier ;
-   samm:exampleValue "BPNA1234567890AA" .
+   samm:characteristic :EitherLocationIdentifier .
 
 :locationIdentifierType a samm:Property ;
    samm:preferredName "location Identifier Type"@en ;
